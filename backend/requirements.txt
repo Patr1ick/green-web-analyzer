@@ -1,1 +1,11 @@
+# Webserver
 flask
+
+# Selenium
+selenium-wire
+
+# Time
+pytz
+
+# Image Proccessing
+pillow

@@ -42,7 +42,10 @@ export default defineComponent({
                     method: "POST",
                     body: JSON.stringify({
                         url: this.url
-                    })
+                    }),
+                    headers: {
+                        "Content-Type": "application/json"
+                    }
                 }
             ).then((response) => {
                 this.$store.commit('invertIsLoading')

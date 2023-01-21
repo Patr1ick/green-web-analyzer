@@ -1,6 +1,6 @@
-FROM alpine:latest
+FROM python:slim
 
-RUN apk add python3 py3-pip
+RUN apt update && apt install -y chromium
 
 WORKDIR /app
 COPY . /app
