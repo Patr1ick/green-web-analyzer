@@ -1,5 +1,6 @@
 <template>
-    <button @click="switchTheme" class="p-4 border-solid border-2 border-transparent rounded-sm hover:border-gray-100">
+    <button @click="switchTheme"
+        class="p-4 border-solid border-2 border-transparent rounded-sm hover:border-gray-100 flex justify-center">
         <SunIcon v-if="!darkTheme" class="text-white w-8 h-8" />
         <MoonIcon v-if="darkTheme" class="text-white w-8 h-8" />
     </button>

@@ -16,19 +16,38 @@ def criteria_requests(requests) -> dict:
 
 def criteria_img_types(img_file_paths) -> dict:
     bad_images = []
+    size_actual, size_webp = 0, 0
     for img in img_file_paths:
         if img['type'] == "image/jpeg" or img['type'] == "image/png" or img['type'] == "image/gif":
+
+            # Convert to webp
+            webp_path = f"{img['path']}.webp"
+
+            image = Image.open(img['path'])
+            image.save(webp_path, format="webp")
+
+            img_size = os.path.getsize(img['path'])
+            img_webp_size = os.path.getsize(webp_path)
+
             bad_images.append({
                 "url": img['url'],
                 "type": img['type'],
-                "size": os.path.getsize(img['path'])
+                "actual_size": img_size,
+                "webp_size": img_webp_size
             })
+
+            size_actual += img_size
+            size_webp += img_webp_size
+
+            os.remove(webp_path)
 
     return {
         "id": 1,
         "accepted": len(bad_images) == 0,
         "details": {
-            "img": bad_images
+            "img": bad_images,
+            "size_actual": size_actual,
+            "size_webp": size_webp
         }
     }
 

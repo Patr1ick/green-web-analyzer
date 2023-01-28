@@ -1,16 +1,16 @@
 <template>
     <!-- <BasicCard> -->
-    <div :class="style">
-        <button @click="collapseAccordion" :class="style">
-            <CheckCircleIcon v-if="applicable" class="icon" :class="style" />
-            <XCircleIcon v-else class="icon" :class="style" />
+    <div :class="divStyle">
+        <button @click="collapseAccordion" :class="buttonStyle">
+            <CheckCircleIcon v-if="status" class="icon" :class="iconStyle" />
+            <XCircleIcon v-else class="icon" :class="iconStyle" />
             <slot name="title">
 
             </slot>
-            <PlusIcon v-if="collapsed" class="icon" />
-            <MinusIcon v-else class="icon" />
+            <PlusIcon v-if="collapsed" :class="iconStyle" />
+            <MinusIcon v-else :class="iconStyle" />
         </button>
-        <section v-if="!collapsed">
+        <section v-if="!collapsed" class="text-gray-200 p-4">
             <slot name="description">
 
             </slot>
@@ -29,7 +29,7 @@ import { PlusIcon, MinusIcon, CheckCircleIcon, XCircleIcon } from '@heroicons/vu
 
 export default defineComponent({
     props: {
-        applicable: {
+        status: {
             type: Boolean,
             default: true
         }
@@ -37,9 +37,21 @@ export default defineComponent({
     data() {
         return {
             collapsed: true,
-            style: {
-                'border-emerald-600': this.applicable,
-                'border-rose-600': !this.applicable
+            divStyle: {
+                'w-full m-2 border rounded': true,
+                'border-emerald-600 text-emerald-600': this.status,
+                'border-rose-600 text-rose-600': !this.status
+            },
+            buttonStyle: {
+                'w-full flex justify-between items-center p-4 border rounded': true,
+                'border-emerald-600 text-emerald-600': this.status,
+                'border-rose-600 text-rose-600': !this.status
+            },
+            iconStyle: {
+                'w-8 h-auto': true,
+                'text-emerald-600': this.status,
+                'text-rose-600': !this.status
+
             }
         }
     },
@@ -52,58 +64,3 @@ export default defineComponent({
     }
 })
 </script>
-
-<style scoped>
-.icon {
-    width: 2em;
-    height: auto;
-}
-
-.icon.red {
-    color: #BD3808;
-}
-
-.icon.green {
-    color: #1abc9c;
-}
-
-div {
-    width: 100%;
-    border-radius: 0.25em;
-    border: 0.1em solid #1abc9c;
-    margin: 0.5em;
-}
-
-
-section {
-    padding: 1em;
-}
-
-button {
-    width: 100%;
-    color: #666666;
-    background-color: transparent;
-    border-radius: 0.125em;
-    border: 0.1em solid;
-    height: 5vh;
-    cursor: pointer;
-
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 0em 1em;
-}
-
-button:hover.green {
-    background-color: #1abc9c10;
-}
-
-button:hover.red {
-    background-color: #bd380810;
-}
-
-.v-enter-active,
-.v-leaver-active {
-    transition: height 2s ease-in-out;
-}
-</style>

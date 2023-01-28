@@ -54,6 +54,8 @@ class Report:
     def save_page(self) -> None:
         self.requests = list()
 
+        self.full_size = 0
+
         for request in self.driver.requests:
             if request.response != None:
                 response = {
@@ -63,14 +65,7 @@ class Report:
             else:
                 response = None
 
-            r = {
-                "url": request.url,
-                "path": request.path,
-                "method": request.method,
-                "response": response,
-                "date": request.date
-            }
-            self.requests.append(r)
+            size = 0
 
             # Try to save it
             try:
@@ -120,10 +115,23 @@ class Report:
                     with open(file_path, "wb") as f:
                         f.write(body)
 
+                    size = os.path.getsize(file_path)
+
             except NotADirectoryError as err:
                 # TODO Replace with logging
                 # TODO Create better error messages for debugging
                 print("Error", err)
+            finally:
+                r = {
+                    "url": request.url,
+                    "path": request.path,
+                    "method": request.method,
+                    "response": response,
+                    "date": request.date,
+                    "size": size
+                }
+                self.requests.append(r)
+                self.full_size += size
 
     def get_amount_requests(self) -> int:
         return len(self.requests)
@@ -139,12 +147,12 @@ class Report:
         self.save_page()
 
         # Generate Metrics
-        size = get_folder_size(self.folder_name)
+        # size = get_folder_size(self.folder_name)
         # Get amount of all requests made
         amount_requests = self.get_amount_requests()
 
         metrics = {
-            "size": size,
+            "size": self.full_size,
             "requests": amount_requests
         }
 
@@ -165,7 +173,7 @@ class Report:
         ]
 
         # End
-        delete_folder(self.folder_name)
+        # delete_folder(self.folder_name)
 
         # Create report
         self.report = {

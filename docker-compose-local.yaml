@@ -1,11 +1,12 @@
 version: "3.8"
 
 services:
-  backend:
-    build: 
-      context: ./backend
-    ports:
-      - "5000:5000"
-    environment:
-      - APP_ENVIRONMENT=local
-      - APP_VERSION=0.0.0
+    backend:
+        build:
+            context: ./backend
+        ports:
+            - "5000:5000"
+        restart: always
+        environment:
+            - APP_ENVIRONMENT=local
+            - APP_VERSION=0.0.0

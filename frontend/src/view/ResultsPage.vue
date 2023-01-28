@@ -1,9 +1,10 @@
 <template>
-    <RequestResults v-if="!isLoaded" />
+    <ResultsSummary v-if="!isLoaded" />
     <BasicCard v-else>
-        <main>
-            <h1>No Results loaded. Search or request a report to show a report</h1>
-            <div>
+        <main class="flex justify-center items-center flex-col w-3/4 m-auto">
+            <h1 class="text-gray-900 dark:text-gray-200">No Results loaded. Search or request a report to show a report
+            </h1>
+            <div class="m-4">
                 <BasicButton @click="$router.push('/request')">
                     Request
                 </BasicButton>
@@ -17,6 +18,7 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue'
+import ResultsSummary from '../components/Results/ResultsSummary.vue';
 
 export default defineComponent({
     computed: {
@@ -25,22 +27,7 @@ export default defineComponent({
         }
     },
     components: {
-        // RequestResults
+        ResultsSummary
     }
 })
 </script>
-
-<style scoped>
-main {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-    width: 90%;
-    margin: auto;
-}
-
-div {
-    margin: 1em;
-}
-</style>
