@@ -26,6 +26,7 @@ jobs:
             - name: Build fronted
               run: |
                   cd frontend
+                  npm install
                   npm run build
                   cd ..
             - name: Login to Docker Hub
@@ -62,6 +63,7 @@ jobs:
     deploy:
         name: Deploy to server
         runs-on: self-hosted
+        needs: build
         steps:
             - name: Invoke deployment hook
               uses: distributhor/workflow-webhook@v2
