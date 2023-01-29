@@ -1,9 +1,9 @@
 webhook.green-web-analyzer.eu {
-	reverse_proxy :9000
+	reverse_proxy localhost:9000
 }
 
 backend.green-web-analyzer.eu {
-	reverse_proxy :5000
+	reverse_proxy localhost:5000
 }
 
 green-web-analyzer.eu {
