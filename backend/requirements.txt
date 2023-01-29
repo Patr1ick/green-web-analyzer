@@ -1,0 +1,12 @@
+# Webserver
+flask
+Flask-Limiter
+
+# Selenium
+selenium-wire
+
+# Time
+pytz
+
+# Image Proccessing
+pillow
