@@ -11,13 +11,12 @@
                 Submit
             </BasicButton>
         </form>
-        <ScaleLoader v-if="isLoading" color="rgb(13, 148, 136)" width="0.5em" />
+        <p v-if="isLoading" class="text-center text-gray-800 dark:text-gray-200">Loading...</p>
     </BasicCard>
 </template>
 
 <script lang="ts">
 import { defineComponent } from 'vue';
-import ScaleLoader from 'vue-spinner/src/ScaleLoader.vue'
 
 export default defineComponent({
     data() {
@@ -62,9 +61,6 @@ export default defineComponent({
                 console.log(this.errorMessage)
             })
         }
-    },
-    components: {
-        ScaleLoader
     }
 })
 </script>
