@@ -173,7 +173,7 @@ class Report:
         ]
 
         # End
-        # delete_folder(self.folder_name)
+        delete_folder(self.folder_name)
 
         # Create report
         self.report = {

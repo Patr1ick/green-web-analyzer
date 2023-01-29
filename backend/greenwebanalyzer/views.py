@@ -6,7 +6,7 @@ from werkzeug.exceptions import HTTPException
 from .report import Report
 
 
-def setupRoutes(app):
+def setupRoutes(app, limiter):
 
     @app.errorhandler(HTTPException)
     def handle_error(e):
@@ -26,7 +26,8 @@ def setupRoutes(app):
             "version": os.getenv('APP_VERSION')
         }, 200
 
-    @ app.route('/request', methods=['POST'])
+    @app.route('/request', methods=['POST'])
+    @limiter.limit("10 per hour")
     def request_report():
         request_data = request.get_json()
 

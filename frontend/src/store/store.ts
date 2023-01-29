@@ -5,39 +5,37 @@ import { ResultsModel } from "../models/result";
 export interface State {
     requestResult: ResultsModel | null;
     isLoading: boolean;
+    showDisclaimer: boolean;
 }
 
-declare module '@vue/runtime-core' {
+declare module "@vue/runtime-core" {
     interface ComponentCustomProperties {
-      $store: Store<State>
+        $store: Store<State>;
     }
-  }
+}
 
 const store = createStore<State>({
     state: {
         requestResult: null,
-        isLoading: false
+        isLoading: false,
+        showDisclaimer: true,
     },
     mutations: {
-        setRequestResult(state, payload: ResultsModel){
+        setRequestResult(state, payload: ResultsModel) {
             state.requestResult = payload;
         },
-        invertIsLoading(state){
+        invertIsLoading(state) {
             state.isLoading = !state.isLoading;
-        }
+        },
+        setShowDisclaimer(state, payload: boolean) {
+            state.showDisclaimer = payload;
+        },
     },
-    getters:{
-        isResultNull(state){
+    getters: {
+        isResultNull(state) {
             return state.requestResult === null;
         },
-        // isResponseNull: (state) => (id: number) => {
-        //     if (state == null){
-        //         return
-        //     }else {
-        //         return state.requestResult.criteria[0].details.requests[id].response == null;
-        //     }
-        // }
-    }
+    },
 });
 
 export default store;

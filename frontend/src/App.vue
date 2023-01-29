@@ -1,13 +1,15 @@
 <template>
-  <TheHeader />
-  <main class="grow">
-      <RouterView />
-  </main>
-  <TheFooter />
+    <TheDisclaimer />
+    <TheHeader />
+    <main class="grow">
+        <RouterView />
+    </main>
+    <TheFooter />
 </template>
 
 <script lang="ts">
 import { defineComponent } from 'vue'
+import TheDisclaimer from './components/Layout/TheDisclaimer.vue';
 import TheFooter from './components/Layout/TheFooter.vue';
 import TheHeader from './components/Layout/TheHeader.vue'
 
@@ -22,7 +24,7 @@ export default defineComponent({
             localStorage.setItem("theme", "light");
         }
     },
-    components: { TheHeader, TheFooter }
+    components: { TheHeader, TheFooter, TheDisclaimer }
 })
 </script>
 
