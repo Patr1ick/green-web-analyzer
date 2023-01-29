@@ -21,6 +21,8 @@ jobs:
               uses: actions/setup-node@v3
               with:
                   node-version: 18
+            - name: Set env
+              run: echo "RELEASE_VERSION=${GITHUB_REF#refs/*/}" >> $GITHUB_ENV
             - name: Build fronted
               run: |
                   cd frontend
@@ -31,16 +33,13 @@ jobs:
               with:
                   username: ${{ secrets.DOCKERHUB_USERNAME }}
                   password: ${{ secrets.DOCKERHUB_TOKEN }}
-            - name: Docker Metadata
-              id: meta
-              uses: docker/metadata-action@v4
             - name: Build and push backend image
               uses: docker/build-push-action@v3
               with:
                   context: ./backend
                   push: true
                   tags: |
-                      patr1ick/green-web-analyzer:${{ tag }}
+                      patr1ick/green-web-analyzer:${{ env.RELEASE_VERSION }}
                       patr1ick/green-web-analyzer:latest
 
             - name: Build and push backend image
@@ -49,7 +48,7 @@ jobs:
                   context: ./backend
                   push: true
                   tags: |
-                      patr1ick/green-web-analyzer:${{ tag }}
+                      patr1ick/green-web-analyzer:${{ env.RELEASE_VERSION }}
                       patr1ick/green-web-analyzer:latest
             - name: Build and push backend image
               uses: docker/build-push-action@v3
@@ -57,7 +56,7 @@ jobs:
                   context: .
                   push: true
                   tags: |
-                      patr1ick/green-web-analyzer:${{ tag }}
+                      patr1ick/green-web-analyzer:${{ env.RELEASE_VERSION }}
                       patr1ick/green-web-analyzer:latest
 
     deploy:
@@ -69,4 +68,4 @@ jobs:
               env:
                   webhook_url: ${{ secrets.WEBHOOK_URL }}
                   webhook_secret: ${{ secrets.WEBHOOK_SECRET }}
-                  data: '{"backend_version": ${{ tag }} }'
+                  data: '{"backend_version": ${{ env.RELEASE_VERSION }} }'
