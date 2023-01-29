@@ -2,7 +2,8 @@ version: "3.8"
 
 services:
     backend:
-        image: green-web-analyzer-backend:latest
+        image: patr1ick/green-web-analyzer:backend-latest
+        container_name: green-web-analyzer-backend
         ports:
             - "5000:5000"
         restart: always
@@ -11,7 +12,11 @@ services:
             - APP_VERSION=${BACKEND_VERSION}
 
     frontend:
-        image: green-web-analyzer-frontend:latest
+        image: patr1ick/green-web-analyzer:frontend-latest
+        container_name: green-web-analyzer-frontend
         ports:
             - "443:443"
         restart: always
+        volumes:
+            - ~/caddy_data:/data
+            - ~/caddy_config:/config
