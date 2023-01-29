@@ -1,6 +1,6 @@
 import os
 
-from flask import request, abort, json, make_response
+from flask import request, abort, json, jsonify, make_response
 from werkzeug.exceptions import HTTPException
 
 from .report import Report
@@ -45,9 +45,7 @@ def setupRoutes(app, limiter):
 
         report = Report(url).create_report()
 
-        response = make_response()
-        response.status_code = 201
-        response.data = report
+        response = make_response(jsonify(report), 201)
         response.headers.add(
             "Access-Control-Allow-Origin",
             "https://green-web-analyzer.eu"
