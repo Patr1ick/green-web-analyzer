@@ -1,5 +1,6 @@
 # Webserver
 flask
+Flask-Limiter
 
 # Selenium
 selenium-wire

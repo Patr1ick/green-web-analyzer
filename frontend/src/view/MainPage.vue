@@ -1,19 +1,15 @@
 <template>
-    <BasicCard class="main">
-        <main>
-            <h1>Green IT: Development of a tool for checking the data efficiency and economy of websites</h1>
-            <p>
-                Climate catastrophe is a current threat to the planet. The IT sector must also make its contribution to
-                reducing greenhouse gas emissions. Even if this is primarily done by switching power generation to
-                renewable
-                energies, energy consumption can be reduced through optimization and data reduction. This tool should
-                help
-                to check certain typical criteria of websites, which can be improved.
+    <main class="flex justify-center">
+        <BasicCard class="w-1/2 text-center text-gray-900 dark:text-gray-200">
+            <h1 class="text-2xl mb-4">
+                Green Web Analyzer
+            </h1>
+            <p class="w-3/5 m-auto">
+                This website is a tool that allows you to check a website for certain criterias. With the background of
+                Green IT, websites are to be checked with regard to data minimisation and efficiency.
             </p>
-            <b>This project is a part of a student research project of the DHBW Stuttgart and the Mercedes-Benz Tech
-                Innovation</b>
-        </main>
-    </BasicCard>
+        </BasicCard>
+    </main>
 </template>
 
 <script lang="ts">
@@ -21,17 +17,3 @@ import { defineComponent } from 'vue'
 
 export default defineComponent({})
 </script>
-
-<style scoped>
-.main {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    width: 50%;
-    margin-left: auto;
-    margin-right: auto;
-    margin-top: 1em;
-    margin-bottom: 1em;
-    padding: 4em;
-}
-</style>
