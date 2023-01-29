@@ -40,25 +40,17 @@ jobs:
                   context: ./backend
                   push: true
                   tags: |
-                      patr1ick/green-web-analyzer:${{ env.RELEASE_VERSION }}
-                      patr1ick/green-web-analyzer:latest
+                      patr1ick/green-web-analyzer-backend:backend-${{ env.RELEASE_VERSION }}
+                      patr1ick/green-web-analyzer:backend-latest
 
-            - name: Build and push backend image
-              uses: docker/build-push-action@v3
-              with:
-                  context: ./backend
-                  push: true
-                  tags: |
-                      patr1ick/green-web-analyzer:${{ env.RELEASE_VERSION }}
-                      patr1ick/green-web-analyzer:latest
-            - name: Build and push backend image
+            - name: Build and push frontend image
               uses: docker/build-push-action@v3
               with:
                   context: .
                   push: true
                   tags: |
-                      patr1ick/green-web-analyzer:${{ env.RELEASE_VERSION }}
-                      patr1ick/green-web-analyzer:latest
+                      patr1ick/green-web-analyzer:frontend-${{ env.RELEASE_VERSION }}
+                      patr1ick/green-web-analyzer:frontend-latest
 
     deploy:
         name: Deploy to server
@@ -70,4 +62,4 @@ jobs:
               env:
                   webhook_url: ${{ secrets.WEBHOOK_URL }}
                   webhook_secret: ${{ secrets.WEBHOOK_SECRET }}
-                  data: '{"backend_version": ${{ env.RELEASE_VERSION }} }'
+                  data: format('{{ "backend_version": "{0}" }}', ${{ env.RELEASE_VERSION }})
