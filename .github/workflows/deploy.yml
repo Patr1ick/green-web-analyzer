@@ -62,4 +62,4 @@ jobs:
               env:
                   webhook_url: ${{ secrets.WEBHOOK_URL }}
                   webhook_secret: ${{ secrets.WEBHOOK_SECRET }}
-                  data: format('{{ "backend_version": "{0}" }}', ${{ env.RELEASE_VERSION }})
+                  data: ${{ join('{"backend_version":"', env.RELEASE_VERSION, '" }') }}
