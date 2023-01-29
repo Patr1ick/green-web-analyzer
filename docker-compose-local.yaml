@@ -9,4 +9,4 @@ services:
         restart: always
         environment:
             - APP_ENVIRONMENT=local
-            - APP_VERSION=0.0.0
+            - APP_VERSION=0.1.0
