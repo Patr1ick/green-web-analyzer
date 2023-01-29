@@ -1,15 +1,15 @@
 webhook.green-web-analyzer.eu {
-        reverse_proxy :9000
+	reverse_proxy :9000
 }
 
 backend.green-web-analyzer.eu {
-        reverse_proxy :5000
+	reverse_proxy :5000
 }
 
 green-web-analyzer.eu {
-        handle {
-                root * /srv
-                try_files {path} /
-                file_server
-        }
+	handle {
+		root * /srv
+		try_files {path} /
+		file_server
+	}
 }
