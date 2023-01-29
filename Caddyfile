@@ -6,14 +6,10 @@ backend.green-web-analyzer.eu {
         reverse_proxy 127.0.0.1:5000
 }
 
-www.green-web-analyzer.eu {
+green-web-analyzer.eu {
         handle {
                 root * /srv
                 try_files {path} /
                 file_server
         }
-}
-
-green-web-analyzer.eu {
-        redirect redir https://www.{host}{uri}
 }
