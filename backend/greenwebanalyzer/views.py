@@ -1,6 +1,6 @@
 import os
 
-from flask import request, abort, json
+from flask import request, abort, json, make_response
 from werkzeug.exceptions import HTTPException
 
 from .report import Report
@@ -19,16 +19,19 @@ def setupRoutes(app, limiter):
         response.content_type = "application/json"
         return response
 
-    @ app.route('/version')
+    @app.route('/version')
     def version():
         return {
             "environment": os.getenv('APP_ENVIRONMENT'),
             "version": os.getenv('APP_VERSION')
         }, 200
 
-    @app.route('/request', methods=['POST'])
+    @app.route('/request', methods=['POST', 'OPTIONS'])
     @limiter.limit("10 per hour")
     def request_report():
+        if request.method == 'OPTIONS':
+            return _build_cors_preflight()
+
         request_data = request.get_json()
 
         # Check if no URL was given or
@@ -42,4 +45,22 @@ def setupRoutes(app, limiter):
 
         report = Report(url).create_report()
 
-        return report, 201
+        response = make_response()
+        response.status_code = 201
+        response.data = report
+        response.headers.add(
+            "Access-Control-Allow-Origin",
+            "https://green-web-analyzer.eu"
+        )
+        return response
+
+
+def _build_cors_preflight():
+    response = make_response()
+    response.headers.add(
+        "Access-Control-Allow-Origin",
+        "https://green-web-analyzer.eu"
+    )
+    response.headers.add('Access-Control-Allow-Headers', "*")
+    response.headers.add('Access-Control-Allow-Methods', "*")
+    return response
