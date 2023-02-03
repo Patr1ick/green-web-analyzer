@@ -20,15 +20,14 @@
                     </thead>
                     <tr v-for="request in result.details.requests">
                         <td class="border border-gray-700 dark:border-gray-100 dark:border-opacity-25">
-                            <CheckCircleIcon v-if="requestSuccess(request.response.status_code)"
+                            <CheckCircleIcon v-if="requestSuccess(request)"
                                 class="w-8 md:w-10 h-auto m-auto text-emerald-600" />
-                            <XCircleIcon v-if="!requestSuccess(request.response.status_code)"
-                                class="w-10 h-auto m-auto text-rose-600" />
+                            <XCircleIcon v-if="!requestSuccess(request)" class="w-10 h-auto m-auto text-rose-600" />
                         </td>
                         <td class="border border-gray-700 dark:border-gray-100 dark:border-opacity-25">
                             {{ request.method }}
                         </td>
-                        <td class="border border-gray-700 dark:border-gray-100 dark:border-opacity-25">
+                        <td class="border border-gray-700 dark:border-gray-100 dark:border-opacity-25 text-left pl-4">
                             <a :href="request.url" class="hover:underline text-clip">
                                 {{ request.url }}
                             </a>
@@ -37,10 +36,23 @@
                             {{ new Date(request.date).toLocaleString() }}
                         </td>
                         <td class="border border-gray-700 dark:border-gray-100 dark:border-opacity-25">
-                            {{ request.response.type }}
+                            <div v-if="hasResponse(request)">
+                                {{ request.response.type }}
+                            </div>
+                            <div v-else>
+                                No Response
+                            </div>
                         </td>
                         <td class="border border-gray-700 dark:border-gray-100 dark:border-opacity-25">
-                            {{ convert(request.size) }}
+                            <div v-if="!hasResponse(request)">
+                                No Response
+                            </div>
+                            <div v-else-if="isRedirect(request)">
+                                Redirect
+                            </div>
+                            <div v-else>
+                                {{ convert(request.size) }}
+                            </div>
                         </td>
                     </tr>
                 </table>
@@ -52,7 +64,7 @@
 <script lang="ts">
 import { defineComponent } from 'vue';
 import type { PropType } from 'vue'
-import { CriteriaModel } from '../../../models/result';
+import { CriteriaModel, RequestModel } from '../../../models/result';
 import convertBytesToString from '../../../utils/functions'
 
 import { CheckCircleIcon, XCircleIcon } from '@heroicons/vue/24/outline'
@@ -65,8 +77,11 @@ export default defineComponent({
         }
     },
     methods: {
-        requestSuccess(status: number): boolean {
-            return (status >= 200 && status < 400)
+        requestSuccess(request: RequestModel): boolean {
+            if (request.response) {
+                return (request.response.status_code >= 200 && request.response.status_code < 400)
+            }
+            return false
         },
         convert(bytes: number | undefined) {
             if (bytes != undefined) {
@@ -74,6 +89,15 @@ export default defineComponent({
             }
             else
                 return bytes;
+        },
+        hasResponse(request: RequestModel) {
+            return request.response !== null
+        },
+        isRedirect(request: RequestModel) {
+            if (request.response) {
+                return (request.response.status_code === 301)
+            }
+            return false
         }
     },
     components: {
