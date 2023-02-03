@@ -31,7 +31,7 @@
                 </tr>
             </table>
             <h2 class="text-2xl mt-4">Criterias</h2>
-            <section class="w-full xl:w-3/4 2xl:w-1/2 m-auto">
+            <section class="w-full xl:w-3/4 2xl:w-4/5 m-auto">
                 <CriteriaRequests :result="getCriteria(0)" />
                 <CriteriaImageType :result="getCriteria(1)" />
                 <CriteriaImageCompression :result="getCriteria(2)" />
