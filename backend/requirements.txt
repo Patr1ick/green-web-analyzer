@@ -10,3 +10,6 @@ pytz
 
 # Image Proccessing
 pillow
+
+# Tools
+validators

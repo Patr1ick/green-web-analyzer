@@ -1,3 +1,10 @@
+# 0.2.3
+
+## Added
+
+-   Added more logging and validation to the backend
+-   Added privacy policy
+
 # 0.2.2
 
 ## Added

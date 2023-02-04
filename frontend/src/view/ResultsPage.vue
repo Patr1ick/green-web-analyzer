@@ -1,6 +1,6 @@
 <template>
     <ResultsSummary v-if="!isLoaded" />
-    <BasicCard v-else class="m-16">
+    <BasicCard v-else class="m-2 md:m-16">
         <main class="flex justify-center items-center flex-col w-3/4 m-auto">
             <h1 class="text-gray-900 dark:text-gray-200 text-lg">
                 No results loaded. Please request or search for a report.

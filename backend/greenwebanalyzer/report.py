@@ -27,8 +27,8 @@ class Report:
         url: string
         """
         self.url = url
-        self.date = datetime.utcnow().replace(tzinfo=pytz.utc)
-
+        timezone = pytz.timezone("Europe/Berlin")
+        self.date = datetime.now(timezone)
         # Initialize WebDriver
         self.options = ChromeOptions()
         self.options.headless = True

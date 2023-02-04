@@ -1,5 +1,5 @@
 <template>
-    <main class="flex justify-end content-center flex-col m-16">
+    <main class="flex justify-end content-center flex-col m-2 md:m-16">
         <BasicCard class="text-center text-gray-900 dark:text-gray-200 w-full lg:3/5 m-auto">
             <h1 class="text-4xl mb-4 font-bold">
                 Green Web Analyzer

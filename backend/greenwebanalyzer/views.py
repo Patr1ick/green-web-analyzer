@@ -3,6 +3,8 @@ import os
 from flask import request, abort, json, jsonify, make_response
 from werkzeug.exceptions import HTTPException
 
+import validators
+
 from .report import Report
 
 
@@ -43,7 +45,21 @@ def setupRoutes(app, limiter):
 
         url = request_data['url']
 
-        report = Report(url).create_report()
+        # Check if URL is valid
+        if not validators.url(url):
+            app.logger.error("Invalid URL was given: %s", url)
+            abort(400, description="No valid URL given.")
+
+        r = Report(url)
+        report = r.create_report()
+
+        app.logger.info({
+            "date:": r.date.strftime('%Y-%m-%dT%H:%M:%S:%f%z'),
+            "ip": request.remote_addr,
+            "user_agent": request.headers.get('User-Agent'),
+            "url": url,
+            "response": 201
+        })
 
         response = make_response(jsonify(report), 201)
         response.headers.add(

@@ -36,7 +36,8 @@ export default defineComponent({
             this.$store.commit('invertIsLoading')
             this.error = false;
             fetch(
-                "https://backend.green-web-analyzer.eu/request",
+                // "https://backend.green-web-analyzer.eu/request",
+                "http://localhost:5000/request",
                 {
                     method: "POST",
                     body: JSON.stringify({
