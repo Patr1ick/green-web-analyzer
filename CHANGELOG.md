@@ -1,3 +1,9 @@
+# [unreleased]
+
+## Added
+
+-   Added more logging and validation to the backend
+
 # 0.2.2
 
 ## Added
