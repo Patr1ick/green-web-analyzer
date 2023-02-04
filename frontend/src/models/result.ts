@@ -13,5 +13,18 @@ export interface ResultsModel {
     url: string;
     date: Date;
     metrics: MetricsModel;
-    criteria: Array<CriteriaModel>
+    criteria: Array<CriteriaModel>;
+}
+
+export interface RequestModel {
+    date: Date;
+    method: string;
+    path: string;
+    response: ResponseModel;
+    size: number;
+    url: string;
+}
+interface ResponseModel {
+    status_code: number;
+    type: string;
 }

@@ -1,5 +1,5 @@
 <template>
-    <BasicCard>
+    <BasicCard class="m-16">
         <div class="flex flex-col justify-center text-center dark:text-gray-200">
             <h1 class="text-2xl sm:text-4xl mb-4">
                 <a :href="results?.url" target="_blank" class="hover:underline">
@@ -31,7 +31,7 @@
                 </tr>
             </table>
             <h2 class="text-2xl mt-4">Criterias</h2>
-            <section class="w-full xl:w-3/4 2xl:w-1/2 m-auto">
+            <section class="w-full xl:w-3/4 2xl:w-4/5 m-auto">
                 <CriteriaRequests :result="getCriteria(0)" />
                 <CriteriaImageType :result="getCriteria(1)" />
                 <CriteriaImageCompression :result="getCriteria(2)" />

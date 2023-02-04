@@ -5,9 +5,15 @@ from PIL import Image
 
 
 def criteria_requests(requests) -> dict:
+    accepted = True
+
+    for r in requests:
+        if r['response'] == None:
+            accepted = False
+
     return {
         "id": 0,
-        "accepted": True,
+        "accepted": accepted,
         "details": {
             "requests": requests,
         }
