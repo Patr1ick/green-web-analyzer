@@ -1,5 +1,5 @@
 <template>
-    <BasicCard class="m-16">
+    <BasicCard class="m-2 md:m-16">
         <div class="flex flex-col justify-center text-center dark:text-gray-200">
             <h1 class="text-2xl sm:text-4xl mb-4">
                 <a :href="results?.url" target="_blank" class="hover:underline">
