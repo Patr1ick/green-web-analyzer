@@ -3,7 +3,6 @@
         <p class="text-gray-200">&copy; 2023 Copyright Patrick Geiger</p>
         <nav class="flex justify-center mt-2">
             <RouterLink to="/privacy" class="text-gray-400 hover:underline px-2">Privacy Policy</RouterLink>
-            <RouterLink to="/disclaimer" class="text-gray-400 hover:underline px-2">Disclaimer</RouterLink>
         </nav>
     </footer>
 </template>
