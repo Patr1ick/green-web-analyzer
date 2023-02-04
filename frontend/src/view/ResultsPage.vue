@@ -1,11 +1,12 @@
 <template>
     <ResultsSummary v-if="!isLoaded" />
-    <BasicCard v-else>
+    <BasicCard v-else class="m-16">
         <main class="flex justify-center items-center flex-col w-3/4 m-auto">
-            <h1 class="text-gray-900 dark:text-gray-200">No Results loaded. Search or request a report to show a report
+            <h1 class="text-gray-900 dark:text-gray-200 text-lg">
+                No results loaded. Please request or search for a report.
             </h1>
             <div class="m-4">
-                <BasicButton @click="$router.push('/request')">
+                <BasicButton @click="$router.push('/')">
                     Request
                 </BasicButton>
                 <BasicButton @click="$router.push('/search')">
