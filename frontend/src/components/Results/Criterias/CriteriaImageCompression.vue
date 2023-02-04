@@ -19,7 +19,7 @@
                         </tr>
                     </thead>
                     <tr v-for="img in result?.details.img">
-                        <td class="border border-gray-700 dark:border-gray-100 dark:border-opacity-25">
+                        <td class="border border-gray-700 dark:border-gray-100 dark:border-opacity-25 break-all">
                             <a :href="img.url" target="_blank" class="hover:underline">
                                 {{ img.url }}
                             </a>

@@ -50,8 +50,16 @@ def setupRoutes(app, limiter):
             app.logger.error("Invalid URL was given: %s", url)
             abort(400, description="No valid URL given.")
 
-        app.logger.info("%s | URL: %s", request.remote_addr, url)
-        report = Report(url).create_report()
+        r = Report(url)
+        report = r.create_report()
+
+        app.logger.info({
+            "date:": r.date.strftime('%Y-%m-%dT%H:%M:%S:%f%z'),
+            "ip": request.remote_addr,
+            "user_agent": request.headers.get('User-Agent'),
+            "url": url,
+            "response": 201
+        })
 
         response = make_response(jsonify(report), 201)
         response.headers.add(
