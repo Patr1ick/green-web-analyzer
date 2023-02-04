@@ -1,13 +1,13 @@
 <template>
-    <header class="flex flex-col md:flex-row justify-between content-center px-8 py-4 bg-teal-800 dark:bg-gray-900">
+    <header class="flex flex-col md:flex-row justify-between content-center px-8 py-4 bg-teal-800 dark:bg-zinc-900">
         <RouterLink to="/">
             <h1 class="text-4xl text-gray-100 py-6 text-center">Website Analyzer</h1>
         </RouterLink>
         <div class="flex justify-between content-center flex-col sm:flex-row flex-wrap p-4 m-auto md:ml-auto md:mr-0">
             <TheThemeSwitch />
             <nav class="flex flex-wrap justify-between content-center mx-4">
-                <RouterLink to="/request" :class="linkClass">
-                    Request
+                <RouterLink to="/about" :class="linkClass">
+                    About
                 </RouterLink>
                 <RouterLink to="/results" :class="linkClass">
                     Results

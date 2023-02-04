@@ -1,9 +1,9 @@
 <template>
-    <BasicCard class="flex justify-center content-center flex-col">
+    <div class="flex justify-center content-center flex-col mt-8">
         <h1 class="text-2xl font-bold text-center text-gray-900 dark:text-gray-200">
             Request a report from a Website
         </h1>
-        <form @submit.prevent="requestReport" class="flex flex-wrap justify-center content-center my-8">
+        <form @submit.prevent="requestReport" class="flex flex-wrap justify-center content-center mt-4">
             <input id="url" type="url" v-model="url"
                 class="text-gray-900 text-center font-bold bg-gray-200 border-2 border-solid rounded-sm border-teal-600 w-96 h-14 m-4"
                 placeholder="https://www.example.com" />
@@ -12,7 +12,7 @@
             </BasicButton>
         </form>
         <p v-if="isLoading" class="text-center text-gray-800 dark:text-gray-200">Loading...</p>
-    </BasicCard>
+    </div>
 </template>
 
 <script lang="ts">
