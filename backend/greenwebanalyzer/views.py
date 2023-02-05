@@ -1,9 +1,14 @@
+from json import JSONDecodeError
 import os
 
 from flask import request, abort, json, jsonify, make_response
 from werkzeug.exceptions import HTTPException
 
 import validators
+
+# Time
+from datetime import datetime
+import pytz
 
 from .report import Report
 
@@ -53,19 +58,36 @@ def setupRoutes(app, limiter):
         r = Report(url)
         report = r.create_report()
 
-        app.logger.info({
-            "date:": r.date.strftime('%Y-%m-%dT%H:%M:%S:%f%z'),
-            "ip": request.remote_addr,
-            "user_agent": request.headers.get('User-Agent'),
-            "url": url,
-            "response": 201
-        })
-
         response = make_response(jsonify(report), 201)
         response.headers.add(
             "Access-Control-Allow-Origin",
             "https://green-web-analyzer.eu"
         )
+        return response
+
+    @app.after_request
+    def after_request(response):
+
+        if request.environ.get('HTTP_X_FORWARDED_FOR') is None:
+            ip = request.remote_addr
+        else:
+            ip = request.headers['X-Forwarded-For']
+
+        try:
+            url = json.loads(response.data)['url']
+        except JSONDecodeError:
+            url = None
+
+        app.logger.info({
+            "date:": datetime.now(pytz.timezone('Europe/Berlin')).strftime('%Y-%m-%dT%H:%M:%S:%f%z'),
+            "path": request.path,
+            "method": request.method,
+            "ip": ip,
+            "user_agent": request.headers.get('User-Agent'),
+            "status": response.status,
+            "content_length": response.content_length,
+            "requested_url": url
+        })
         return response
 
 
