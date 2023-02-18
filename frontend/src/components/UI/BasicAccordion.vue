@@ -1,4 +1,4 @@
-<template><!-- <BasicCard> -->
+<template>
     <div :class="divStyle">
         <button @click="collapseAccordion" :class="buttonStyle">
             <CheckCircleIcon v-if="status" class="icon" :class="iconStyle" />
@@ -18,7 +18,7 @@
             </slot>
         </section>
     </div>
-<!-- </BasicCard> --></template>
+</template>
 
 <script lang="ts">
 import { defineComponent } from 'vue'
@@ -38,17 +38,17 @@ export default defineComponent({
             divStyle: {
                 'w-full m-2 border rounded': true,
                 'border-emerald-600 text-emerald-600': this.status,
-                'border-rose-600 text-rose-600': !this.status
+                'border-rose-900 text-rose-900': !this.status
             },
             buttonStyle: {
                 'w-full flex justify-between items-center p-4 border rounded': true,
                 'border-emerald-600 text-emerald-600': this.status,
-                'border-rose-600 text-rose-600': !this.status
+                'border-rose-900 text-rose-900': !this.status
             },
             iconStyle: {
                 'w-8 h-auto': true,
                 'text-emerald-600': this.status,
-                'text-rose-600': !this.status
+                'text-rose-900': !this.status
 
             }
         }
