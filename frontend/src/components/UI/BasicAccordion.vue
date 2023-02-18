@@ -1,5 +1,4 @@
-<template>
-    <!-- <BasicCard> -->
+<template><!-- <BasicCard> -->
     <div :class="divStyle">
         <button @click="collapseAccordion" :class="buttonStyle">
             <CheckCircleIcon v-if="status" class="icon" :class="iconStyle" />
@@ -19,13 +18,12 @@
             </slot>
         </section>
     </div>
-    <!-- </BasicCard> -->
-</template>
+<!-- </BasicCard> --></template>
 
 <script lang="ts">
 import { defineComponent } from 'vue'
 
-import { PlusIcon, MinusIcon, CheckCircleIcon, XCircleIcon } from '@heroicons/vue/24/outline'
+import { PlusIcon, MinusIcon, CheckCircleIcon, XCircleIcon } from '@heroicons/vue/24/solid'
 
 export default defineComponent({
     props: {
