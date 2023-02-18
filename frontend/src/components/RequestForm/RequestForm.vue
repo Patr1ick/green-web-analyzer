@@ -1,24 +1,35 @@
 <template>
-    <div class="flex justify-center content-center flex-col mt-8">
+    <div class="flex justify-center items-center flex-col mt-8">
         <h1 class="text-2xl font-bold text-center text-gray-900 dark:text-gray-200">
             Request a report from a Website
         </h1>
-        <form @submit.prevent="requestReport" class="flex flex-wrap justify-center content-center mt-4">
+        <form @submit.prevent="requestReport" class="flex flex-wrap justify-center content-center w-1/2 my-4">
             <input id="url" type="url" v-model="url"
-                class="text-gray-900 text-center font-bold bg-gray-200 border-2 border-solid rounded-sm border-teal-600 w-96 h-14 m-4"
+                class="grow text-gray-900 text-center font-bold bg-gray-200 border-2 border-solid rounded-sm border-teal-600 h-14"
                 placeholder="https://www.example.com" />
-            <BasicButton type="submit" :disabled="isLoading">
+            <BasicButton type="submit" :disabled="isLoading" class="mr-0">
                 Submit
             </BasicButton>
         </form>
         <p v-if="isLoading" class="text-center text-gray-800 dark:text-gray-200">Loading...</p>
+        <div v-if="error"
+            class="flex justify-between items-center w-1/2 rounded border border-rose-900 bg-rose-900 bg-opacity-5 p-4">
+            <ExclamationTriangleIcon class="w-8 text-rose-900" />
+            <p class="grow">
+                {{ errorMessage }}
+            </p>
+        </div>
     </div>
 </template>
 
 <script lang="ts">
 import { defineComponent } from 'vue';
+import { ExclamationTriangleIcon } from '@heroicons/vue/24/solid'
 
 export default defineComponent({
+    components: {
+        ExclamationTriangleIcon
+    },
     data() {
         return {
             url: "https://www.wikipedia.org",
@@ -47,19 +58,20 @@ export default defineComponent({
                         "Content-Type": "application/json"
                     }
                 }
-            ).then((response) => {
-                this.$store.commit('invertIsLoading')
+            ).then(async (response) => {
                 if (response.ok) {
                     return response.json()
                 }
-                this.error = true;
-                throw new Error(response.statusText)
+                const data = await response.json()
+                throw new Error(data.description)
             }).then((data) => {
+                this.$store.commit('invertIsLoading')
                 this.$store.commit('setRequestResult', data)
                 this.$router.push('/results')
-            }).catch((error) => {
-                this.errorMessage = error.message;
-                console.log(this.errorMessage)
+            }).catch((err) => {
+                this.$store.commit('invertIsLoading')
+                this.errorMessage = err;
+                this.error = true
             })
         }
     }

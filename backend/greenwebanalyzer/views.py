@@ -93,10 +93,16 @@ def setupRoutes(app, limiter):
 
 def _build_cors_preflight():
     response = make_response()
-    response.headers.add(
-        "Access-Control-Allow-Origin",
-        "https://green-web-analyzer.eu"
-    )
+    if os.getenv('APP_ENVIRONMENT') == "local" or os.getenv('APP_ENVIRONMENT') == "debug":
+        response.headers.add(
+            "Access-Control-Allow-Origin",
+            "*"
+        )
+    else:
+        response.headers.add(
+            "Access-Control-Allow-Origin",
+            "https://green-web-analyzer.eu"
+        )
     response.headers.add('Access-Control-Allow-Headers', "*")
     response.headers.add('Access-Control-Allow-Methods', "*")
     return response
