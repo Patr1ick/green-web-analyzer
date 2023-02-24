@@ -11,25 +11,19 @@
                 Submit
             </BasicButton>
         </form>
-        <p v-if="isLoading" class="text-center text-gray-800 dark:text-gray-200">Loading...</p>
-        <div v-if="error"
-            class="flex justify-between items-center w-1/2 rounded border border-rose-900 bg-rose-900 bg-opacity-5 p-4">
-            <ExclamationTriangleIcon class="w-8 text-rose-900" />
-            <p class="grow">
-                {{ errorMessage }}
-            </p>
-        </div>
+        <BasicHint v-if="isLoading" type="information">
+            Generating the request. This can take a while.
+        </BasicHint>
+        <BasicHint v-if="error" type="error">
+            {{ errorMessage }}
+        </BasicHint>
     </div>
 </template>
 
 <script lang="ts">
 import { defineComponent } from 'vue';
-import { ExclamationTriangleIcon } from '@heroicons/vue/24/solid'
 
 export default defineComponent({
-    components: {
-        ExclamationTriangleIcon
-    },
     data() {
         return {
             url: "https://www.wikipedia.org",
