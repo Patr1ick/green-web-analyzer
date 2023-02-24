@@ -28,7 +28,7 @@
                             {{ request.method }}
                         </td>
                         <td
-                            class="border border-gray-700 dark:border-gray-100 dark:border-opacity-25 text-left break-all pl-4">
+                            class="border border-gray-700 dark:border-gray-100 dark:border-opacity-25 text-left min-w-max pl-4">
                             <a :href="request.url" class="hover:underline text-clip">
                                 {{ request.url }}
                             </a>
