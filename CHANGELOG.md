@@ -1,3 +1,15 @@
+# [unreleased]
+
+## Added
+
+-   Added BasicHint and better error messages
+-   Added new metric potential savings (not finished)
+-   Added icon
+
+## Updated
+
+-   Updated styling for Components
+
 # 0.2.3
 
 ## Added
