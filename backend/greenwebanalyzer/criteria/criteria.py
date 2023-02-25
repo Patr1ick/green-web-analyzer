@@ -30,7 +30,7 @@ def criteria_redirects(requests) -> dict:
 
     return {
         "id": 1,
-        "accepted": amount > 1,
+        "accepted": amount < 1,
         "details": {
             "amount": amount,
             "redirects": redirects,

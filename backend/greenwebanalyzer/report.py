@@ -164,7 +164,7 @@ class Report:
             criteria_0,
             criteria_1,
             criteria_2,
-            criteria_2
+            criteria_3
         ]
 
         # End
