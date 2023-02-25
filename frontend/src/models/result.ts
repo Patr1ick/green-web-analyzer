@@ -1,6 +1,7 @@
 export interface MetricsModel {
     size: number;
     requests: number;
+    potential_savings: number;
 }
 
 export interface CriteriaModel {
