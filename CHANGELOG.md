@@ -5,6 +5,7 @@
 -   Added BasicHint and better error messages
 -   Added new metric potential savings (not finished)
 -   Added icon
+-   Added new criteria "redirects"
 
 ## Updated
 

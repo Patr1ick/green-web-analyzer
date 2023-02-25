@@ -33,8 +33,9 @@
             <h2 class="text-2xl mt-4">Criterias</h2>
             <section class="w-full xl:w-3/4 2xl:w-4/5 m-auto">
                 <CriteriaRequests :result="getCriteria(0)" />
-                <CriteriaImageType :result="getCriteria(1)" />
-                <CriteriaImageCompression :result="getCriteria(2)" />
+                <CriteriaRedirects :result="getCriteria(1)" />
+                <CriteriaImageType :result="getCriteria(2)" />
+                <CriteriaImageCompression :result="getCriteria(3)" />
             </section>
         </div>
     </BasicCard>
@@ -48,6 +49,7 @@ import CriteriaRequests from './Criterias/CriteriaRequests.vue';
 import CriteriaImageCompression from './Criterias/CriteriaImageCompression.vue'
 
 import { CriteriaModel } from '../../models/result';
+import CriteriaRedirects from './Criterias/CriteriaRedirects.vue';
 
 export default defineComponent({
     computed: {
@@ -75,7 +77,7 @@ export default defineComponent({
             return empty;
         }
     },
-    components: { CriteriaRequests, CriteriaImageType, CriteriaImageCompression }
+    components: { CriteriaRequests, CriteriaImageType, CriteriaImageCompression, CriteriaRedirects }
 })
 </script>
 
