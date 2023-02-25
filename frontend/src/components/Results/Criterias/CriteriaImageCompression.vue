@@ -8,7 +8,7 @@
         <template #details>
             <div class="overflow-x-auto">
                 <table class="w-full p-4 border-separate border-spacing-1">
-                    <thead class="bg-opacity-25 bg-gray-800">
+                    <thead class="dark:bg-opacity-25 bg-gray-800">
                         <tr>
                             <th class="border border-gray-600 px-2">URL</th>
                             <th class="border border-gray-600 px-2">Preview</th>
@@ -18,7 +18,7 @@
                             <th class="border border-gray-600 px-2">Saved</th>
                         </tr>
                     </thead>
-                    <tr v-for="img in result?.details.img">
+                    <tr v-for="img in result?.details.img" class="text-gray-800 dark:text-gray-200">
                         <td class="border border-gray-700 dark:border-gray-100 dark:border-opacity-25 break-all">
                             <a :href="img.url" target="_blank" class="hover:underline">
                                 {{ img.url }}
@@ -45,7 +45,6 @@
         </template>
 
     </BasicAccordion>
-
 </template>
 
 <script lang="ts">

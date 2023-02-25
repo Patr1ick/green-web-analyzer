@@ -1,14 +1,14 @@
 <template>
-    <!-- <BasicCard> -->
-    <div :class="divStyle">
-        <button @click="collapseAccordion" :class="buttonStyle">
+    <div class="w-full m-1 border rounded dark:border-opacity-20 border-gray-800 dark:border-gray-200">
+        <button @click="collapseAccordion"
+            class="w-full flex justify-between items-center p-4 border-b dark:border-opacity-20 border-gray-800 dark:border-gray-200">
             <CheckCircleIcon v-if="status" class="icon" :class="iconStyle" />
             <XCircleIcon v-else class="icon" :class="iconStyle" />
             <slot name="title">
 
             </slot>
-            <PlusIcon v-if="collapsed" :class="iconStyle" />
-            <MinusIcon v-else :class="iconStyle" />
+            <PlusIcon v-if="collapsed" class="w-8 h-auto" />
+            <MinusIcon v-else class="w-8 h-auto" />
         </button>
         <section v-if="!collapsed" class="text-gray-200 p-4">
             <slot name="description">
@@ -19,13 +19,12 @@
             </slot>
         </section>
     </div>
-    <!-- </BasicCard> -->
 </template>
 
 <script lang="ts">
 import { defineComponent } from 'vue'
 
-import { PlusIcon, MinusIcon, CheckCircleIcon, XCircleIcon } from '@heroicons/vue/24/outline'
+import { CheckCircleIcon, XCircleIcon } from '@heroicons/vue/24/solid'
 
 export default defineComponent({
     props: {
@@ -37,21 +36,10 @@ export default defineComponent({
     data() {
         return {
             collapsed: true,
-            divStyle: {
-                'w-full m-2 border rounded': true,
-                'border-emerald-600 text-emerald-600': this.status,
-                'border-rose-600 text-rose-600': !this.status
-            },
-            buttonStyle: {
-                'w-full flex justify-between items-center p-4 border rounded': true,
-                'border-emerald-600 text-emerald-600': this.status,
-                'border-rose-600 text-rose-600': !this.status
-            },
             iconStyle: {
                 'w-8 h-auto': true,
                 'text-emerald-600': this.status,
-                'text-rose-600': !this.status
-
+                'text-rose-900': !this.status
             }
         }
     },
@@ -60,7 +48,7 @@ export default defineComponent({
             this.collapsed = !this.collapsed;
         }
     }, components: {
-        PlusIcon, MinusIcon, CheckCircleIcon, XCircleIcon
+        CheckCircleIcon, XCircleIcon
     }
 })
 </script>

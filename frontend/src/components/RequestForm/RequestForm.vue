@@ -1,27 +1,52 @@
 <template>
-    <div class="flex justify-center content-center flex-col mt-8">
+    <div class="flex justify-center items-center flex-col mt-8">
         <h1 class="text-2xl font-bold text-center text-gray-900 dark:text-gray-200">
             Request a report from a Website
         </h1>
-        <form @submit.prevent="requestReport" class="flex flex-wrap justify-center content-center mt-4">
-            <input id="url" type="url" v-model="url"
-                class="text-gray-900 text-center font-bold bg-gray-200 border-2 border-solid rounded-sm border-teal-600 w-96 h-14 m-4"
-                placeholder="https://www.example.com" />
-            <BasicButton type="submit" :disabled="isLoading">
+        <form @submit.prevent="requestReport" class="flex flex-wrap justify-center content-center my-4">
+            <!-- <input id="url" type="url" v-model="url"
+                class="grow text-gray-900 dark:text-gray-400 text-center font-bold bg-opacity-5 bg-emerald-800 border-2 border-solid rounded-sm border-emerald-600 h-14"
+                placeholder="https://www.example.com" /> -->
+            <RequestInput v-model="url" />
+            <BasicButton type="submit" :disabled="isLoading" class="mr-0">
                 Submit
             </BasicButton>
         </form>
-        <p v-if="isLoading" class="text-center text-gray-800 dark:text-gray-200">Loading...</p>
+        <BasicHint v-if="isLoading" type="information">
+            Generating the request. This can take a while.
+        </BasicHint>
+        <BasicHint v-if="error" type="error">
+            {{ errorMessage }}
+        </BasicHint>
+        <BasicHint v-if="error" type="information" class="my-2">
+            <span v-if="error" class="flex flex-col gap-1 justify-items-center">
+                <p>
+                    If the error still occurs, please create an issue at
+                </p>
+                <a href="https://github.com/Patr1ick/green-web-analyzer/issues" target="_blank"
+                    class="flex gap-1 justify-center">
+                    GitHub
+                    <LinkIcon class="w-4 text-gray-200" />
+                </a>
+            </span>
+        </BasicHint>
     </div>
 </template>
 
 <script lang="ts">
 import { defineComponent } from 'vue';
+import RequestInput from './RequestInput.vue'
+import { LinkIcon } from '@heroicons/vue/24/solid'
+
 
 export default defineComponent({
+    components: {
+        RequestInput,
+        LinkIcon
+    },
     data() {
         return {
-            url: "https://www.wikipedia.org",
+            url: "",
             error: false,
             errorMessage: ""
         }
@@ -47,19 +72,20 @@ export default defineComponent({
                         "Content-Type": "application/json"
                     }
                 }
-            ).then((response) => {
-                this.$store.commit('invertIsLoading')
+            ).then(async (response) => {
                 if (response.ok) {
                     return response.json()
                 }
-                this.error = true;
-                throw new Error(response.statusText)
+                const data = await response.json()
+                throw new Error(data.description)
             }).then((data) => {
+                this.$store.commit('invertIsLoading')
                 this.$store.commit('setRequestResult', data)
                 this.$router.push('/results')
-            }).catch((error) => {
-                this.errorMessage = error.message;
-                console.log(this.errorMessage)
+            }).catch((err) => {
+                this.$store.commit('invertIsLoading')
+                this.errorMessage = err;
+                this.error = true
             })
         }
     }

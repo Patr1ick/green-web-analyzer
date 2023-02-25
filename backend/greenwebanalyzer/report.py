@@ -12,9 +12,9 @@ import pytz
 import os
 
 # Criterias
-from .criteria import criteria_requests, criteria_img_types, criteria_img_compression
+from .criteria import criteria_requests, criteria_img_types, criteria_img_compression, criteria_redirects
 
-from .utils import get_folder_size, create_folder, delete_folder
+from .utils import create_folder, delete_folder
 
 
 class Report:
@@ -45,6 +45,7 @@ class Report:
         self.folder_name = f"request-{time.time()}"
 
         self.driver = webdriver.Chrome(options=self.options)
+        self.driver.set_window_size(1920, 1080)
 
     def request_page(self) -> None:
         del self.driver.requests
@@ -146,6 +147,29 @@ class Report:
         # Request page with Selenium Wire
         self.save_page()
 
+        # Criteria 0: Outgoing Request
+        criteria_0 = criteria_requests(self.requests)
+
+        # Criteria 1: Redirects
+        criteria_1 = criteria_redirects(self.requests)
+
+        # Criteria 2: Images Types
+        criteria_2 = criteria_img_types(self.file_paths['img'])
+
+        # Criteria 3: Image Compression
+        criteria_3 = criteria_img_compression(self.file_paths['img'])
+
+        # Combine
+        criterias = [
+            criteria_0,
+            criteria_1,
+            criteria_2,
+            criteria_3
+        ]
+
+        # End
+        delete_folder(self.folder_name)
+
         # Generate Metrics
         # size = get_folder_size(self.folder_name)
         # Get amount of all requests made
@@ -153,33 +177,15 @@ class Report:
 
         metrics = {
             "size": self.full_size,
-            "requests": amount_requests
+            "requests": amount_requests,
+            "potential_savings": criteria_2['details']['size_actual'] - criteria_2['details']['size_webp']
         }
-
-        # Criteria 0: Outgoing Request
-        criteria_0 = criteria_requests(self.requests)
-
-        # Criteria 1: Images Types
-        criteria_1 = criteria_img_types(self.file_paths['img'])
-
-        # Criteria 2: Image Compression
-        criteria_2 = criteria_img_compression(self.file_paths['img'])
-
-        # Combine
-        criterias = [
-            criteria_0,
-            criteria_1,
-            criteria_2
-        ]
-
-        # End
-        delete_folder(self.folder_name)
 
         # Create report
         self.report = {
             "url": self.url,
             "date": self.date,
             "metrics": metrics,
-            "criteria": criterias
+            "criteria": criterias,
         }
         return self.report

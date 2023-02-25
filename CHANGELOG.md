@@ -1,3 +1,16 @@
+# 0.2.4
+
+## Added
+
+-   Added BasicHint and better error messages
+-   Added new metric potential savings (not finished)
+-   Added icon
+-   Added new criteria "redirects"
+
+## Updated
+
+-   Updated styling for Components
+
 # 0.2.3
 
 ## Added

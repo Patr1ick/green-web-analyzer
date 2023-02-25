@@ -20,6 +20,24 @@ def criteria_requests(requests) -> dict:
     }
 
 
+def criteria_redirects(requests) -> dict:
+    amount = 0
+    redirects = []
+    for r in requests:
+        if r['response']['status_code'] == 301:
+            amount += 1
+            redirects.append(r)
+
+    return {
+        "id": 1,
+        "accepted": amount < 1,
+        "details": {
+            "amount": amount,
+            "redirects": redirects,
+        }
+    }
+
+
 def criteria_img_types(img_file_paths) -> dict:
     bad_images = []
     size_actual, size_webp = 0, 0
@@ -48,7 +66,7 @@ def criteria_img_types(img_file_paths) -> dict:
             os.remove(webp_path)
 
     return {
-        "id": 1,
+        "id": 2,
         "accepted": len(bad_images) == 0,
         "details": {
             "img": bad_images,
@@ -80,7 +98,7 @@ def criteria_img_compression(img_file_paths) -> dict:
             os.remove(img['path'] + 'buffer.jpeg')
 
     return {
-        "id": 2,
+        "id": 3,
         "accepted": len(compressed_images) == 0,
         "details": {
             "img": compressed_images
