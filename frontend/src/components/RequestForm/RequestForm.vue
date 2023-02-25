@@ -4,9 +4,10 @@
             Request a report from a Website
         </h1>
         <form @submit.prevent="requestReport" class="flex flex-wrap justify-center content-center w-1/2 my-4">
-            <input id="url" type="url" v-model="url"
-                class="grow text-gray-900 text-center font-bold bg-gray-200 border-2 border-solid rounded-sm border-teal-600 h-14"
-                placeholder="https://www.example.com" />
+            <!-- <input id="url" type="url" v-model="url"
+                class="grow text-gray-900 dark:text-gray-400 text-center font-bold bg-opacity-5 bg-emerald-800 border-2 border-solid rounded-sm border-emerald-600 h-14"
+                placeholder="https://www.example.com" /> -->
+            <RequestInput v-model="url" />
             <BasicButton type="submit" :disabled="isLoading" class="mr-0">
                 Submit
             </BasicButton>
@@ -22,11 +23,15 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue';
+import RequestInput from './RequestInput.vue'
 
 export default defineComponent({
+    components: {
+        RequestInput
+    },
     data() {
         return {
-            url: "https://www.wikipedia.org",
+            url: "",
             error: false,
             errorMessage: ""
         }
@@ -41,8 +46,8 @@ export default defineComponent({
             this.$store.commit('invertIsLoading')
             this.error = false;
             fetch(
-                "https://backend.green-web-analyzer.eu/request",
-                // "http://localhost:5000/request",
+                // "https://backend.green-web-analyzer.eu/request",
+                "http://localhost:5000/request",
                 {
                     method: "POST",
                     body: JSON.stringify({
