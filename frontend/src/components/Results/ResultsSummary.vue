@@ -21,8 +21,8 @@
                 </tr>
                 <tr class="metrics-row">
                     <div class="metric">
-                        <h3>Metric #3</h3>
-                        <p>Value</p>
+                        <h3>Potential Savings in Bytes</h3>
+                        <p>{{ convert(results?.metrics.potential_savings) }}</p>
                     </div>
                     <div class="metric">
                         <h3>Metric #4</h3>

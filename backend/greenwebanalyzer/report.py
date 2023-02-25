@@ -14,7 +14,7 @@ import os
 # Criterias
 from .criteria import criteria_requests, criteria_img_types, criteria_img_compression
 
-from .utils import get_folder_size, create_folder, delete_folder
+from .utils import create_folder, delete_folder
 
 
 class Report:
@@ -45,6 +45,7 @@ class Report:
         self.folder_name = f"request-{time.time()}"
 
         self.driver = webdriver.Chrome(options=self.options)
+        self.driver.set_window_size(1920, 1080)
 
     def request_page(self) -> None:
         del self.driver.requests
@@ -146,16 +147,6 @@ class Report:
         # Request page with Selenium Wire
         self.save_page()
 
-        # Generate Metrics
-        # size = get_folder_size(self.folder_name)
-        # Get amount of all requests made
-        amount_requests = self.get_amount_requests()
-
-        metrics = {
-            "size": self.full_size,
-            "requests": amount_requests
-        }
-
         # Criteria 0: Outgoing Request
         criteria_0 = criteria_requests(self.requests)
 
@@ -175,11 +166,22 @@ class Report:
         # End
         delete_folder(self.folder_name)
 
+        # Generate Metrics
+        # size = get_folder_size(self.folder_name)
+        # Get amount of all requests made
+        amount_requests = self.get_amount_requests()
+
+        metrics = {
+            "size": self.full_size,
+            "requests": amount_requests,
+            "potential_savings": criteria_1['details']['size_actual'] - criteria_1['details']['size_webp']
+        }
+
         # Create report
         self.report = {
             "url": self.url,
             "date": self.date,
             "metrics": metrics,
-            "criteria": criterias
+            "criteria": criterias,
         }
         return self.report
