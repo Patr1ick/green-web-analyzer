@@ -3,7 +3,7 @@
         <h1 class="text-2xl font-bold text-center text-gray-900 dark:text-gray-200">
             Request a report from a Website
         </h1>
-        <form @submit.prevent="requestReport" class="flex flex-wrap justify-center content-center w-1/2 my-4">
+        <form @submit.prevent="requestReport" class="flex flex-wrap justify-center content-center my-4">
             <!-- <input id="url" type="url" v-model="url"
                 class="grow text-gray-900 dark:text-gray-400 text-center font-bold bg-opacity-5 bg-emerald-800 border-2 border-solid rounded-sm border-emerald-600 h-14"
                 placeholder="https://www.example.com" /> -->
@@ -18,16 +18,31 @@
         <BasicHint v-if="error" type="error">
             {{ errorMessage }}
         </BasicHint>
+        <BasicHint v-if="error" type="information" class="my-2">
+            <span v-if="error" class="flex flex-col gap-1 justify-items-center">
+                <p>
+                    If the error still occurs, please create an issue at
+                </p>
+                <a href="https://github.com/Patr1ick/green-web-analyzer/issues" target="_blank"
+                    class="flex gap-1 justify-center">
+                    GitHub
+                    <LinkIcon class="w-4 text-gray-200" />
+                </a>
+            </span>
+        </BasicHint>
     </div>
 </template>
 
 <script lang="ts">
 import { defineComponent } from 'vue';
 import RequestInput from './RequestInput.vue'
+import { LinkIcon } from '@heroicons/vue/24/solid'
+
 
 export default defineComponent({
     components: {
-        RequestInput
+        RequestInput,
+        LinkIcon
     },
     data() {
         return {
@@ -46,8 +61,8 @@ export default defineComponent({
             this.$store.commit('invertIsLoading')
             this.error = false;
             fetch(
-                // "https://backend.green-web-analyzer.eu/request",
-                "http://localhost:5000/request",
+                "https://backend.green-web-analyzer.eu/request",
+                // "http://localhost:5000/request",
                 {
                     method: "POST",
                     body: JSON.stringify({
