@@ -12,7 +12,7 @@ import pytz
 import os
 
 # Criterias
-from .criteria import criteria_requests, criteria_img_types, criteria_img_compression
+from .criteria import criteria_requests, criteria_img_types, criteria_img_compression, criteria_redirects
 
 from .utils import create_folder, delete_folder
 
@@ -150,16 +150,20 @@ class Report:
         # Criteria 0: Outgoing Request
         criteria_0 = criteria_requests(self.requests)
 
-        # Criteria 1: Images Types
-        criteria_1 = criteria_img_types(self.file_paths['img'])
+        # Criteria 1: Redirects
+        criteria_1 = criteria_redirects(self.requests)
 
-        # Criteria 2: Image Compression
-        criteria_2 = criteria_img_compression(self.file_paths['img'])
+        # Criteria 2: Images Types
+        criteria_2 = criteria_img_types(self.file_paths['img'])
+
+        # Criteria 3: Image Compression
+        criteria_3 = criteria_img_compression(self.file_paths['img'])
 
         # Combine
         criterias = [
             criteria_0,
             criteria_1,
+            criteria_2,
             criteria_2
         ]
 
@@ -174,7 +178,7 @@ class Report:
         metrics = {
             "size": self.full_size,
             "requests": amount_requests,
-            "potential_savings": criteria_1['details']['size_actual'] - criteria_1['details']['size_webp']
+            "potential_savings": criteria_2['details']['size_actual'] - criteria_2['details']['size_webp']
         }
 
         # Create report
