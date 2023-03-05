@@ -77,6 +77,8 @@ def setupRoutes(app, limiter):
             url = json.loads(response.data)['url']
         except JSONDecodeError:
             url = None
+        except KeyError:
+            url = None
 
         app.logger.info({
             "date:": datetime.now(pytz.timezone('Europe/Berlin')).strftime('%Y-%m-%dT%H:%M:%S:%f%z'),

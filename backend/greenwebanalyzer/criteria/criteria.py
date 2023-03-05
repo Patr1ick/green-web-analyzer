@@ -3,6 +3,8 @@ import os
 # Image Proccessing
 from PIL import Image
 
+from css_html_js_minify import process_single_js_file
+
 
 def criteria_requests(requests) -> dict:
     accepted = True
@@ -103,4 +105,31 @@ def criteria_img_compression(img_file_paths) -> dict:
         "details": {
             "img": compressed_images
         }
+    }
+
+
+def criteria_minified_files(file_paths) -> dict:
+    minified_files = {
+        'js': [],
+        'css': []
+    }
+    # JavaScript files
+    for js in file_paths['js']:
+        # minified_files['js'].append(js['path'])
+        output = f"{js['path']}.min.js"
+        process_single_js_file(js['path'], overwrite=False, output_path=output)
+        actual_size = os.path.getsize(js['path'])
+        output_size = os.path.getsize(output)
+        if actual_size > output_size:
+            minified_files['js'].append({
+                "url": js['url'],
+                "path": js['path'],
+                "actual_size": actual_size,
+                "minified_size": output_size
+            })
+
+    return {
+        "id": 4,
+        "accepted": True,
+        "details": minified_files
     }

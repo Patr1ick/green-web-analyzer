@@ -12,7 +12,7 @@ import pytz
 import os
 
 # Criterias
-from .criteria import criteria_requests, criteria_img_types, criteria_img_compression, criteria_redirects
+from .criteria import criteria_requests, criteria_img_types, criteria_img_compression, criteria_redirects, criteria_minified_files
 
 from .utils import create_folder, delete_folder
 
@@ -39,7 +39,8 @@ class Report:
             "html": [],
             "css": [],
             "js": [],
-            "img": []
+            "img": [],
+            "svg": [],
         }
 
         self.folder_name = f"request-{time.time()}"
@@ -56,6 +57,8 @@ class Report:
         self.requests = list()
 
         self.full_size = 0
+
+        existing_files = []
 
         for request in self.driver.requests:
             if request.response != None:
@@ -86,22 +89,44 @@ class Report:
                         # Sub-Domain file (ex. /de )
                         elif ".html" not in path:
                             file_name = path + ".html"
-                        # Default
+                    # Default
                     else:
                         file_name = path
-
-                    file_path = f"./{self.folder_name}{file_name}"
-                    folder_path = f"./{self.folder_name}{os.path.dirname(file_name)}"
 
                     # Add to file_paths
                     if "text/html" in request.response.headers['Content-Type']:
                         file_type = "html"
                     elif "text/css" in request.response.headers['Content-Type']:
                         file_type = "css"
-                    elif "application/javascript" in request.response.headers['Content-Type']:
+                    elif "text/javascript" in request.response.headers['Content-Type'] or "application/javascript" in request.response.headers['Content-Type']:
                         file_type = "js"
+                    # SVG can have additional information in the Content-Type, like "image/svg+xml; charset=utf-8"
+                    elif "image/svg+xml" in request.response.headers['Content-Type']:
+                        file_type = "svg"
                     elif request.response.headers['Content-Type'] in ["image/gif", "image/jpeg", "image/png", "image/svg+xml", "image/webp"]:
                         file_type = "img"
+
+                    # Especially for PHP pages
+                    if path in existing_files:
+                        if file_type == "img":
+                            match request.response.headers['Content-Type']:
+                                case "image/gif":
+                                    file_name = f"{path}?{time.time()}.gif"
+                                case "image/jpeg":
+                                    file_name = f"{path}?{time.time()}.jpeg"
+                                case "image/png":
+                                    file_name = f"{path}?{time.time()}.png"
+                                case "image/svg+xml":
+                                    file_name = f"{path}?{time.time()}.svg"
+                                case "image/webp":
+                                    file_name = f"{path}?{time.time()}.webp"
+                        else:
+                            file_name = f"{path}?{time.time()}.{file_type}"
+
+                    # Set paths
+                    file_path = f"./{self.folder_name}{file_name}"
+                    folder_path = f"./{self.folder_name}{os.path.dirname(file_name)}"
+
                     self.file_paths[file_type].append({
                         "url": request.url,
                         "path": file_path,
@@ -115,6 +140,8 @@ class Report:
 
                     with open(file_path, "wb") as f:
                         f.write(body)
+
+                    existing_files.append(path)
 
                     size = os.path.getsize(file_path)
 
@@ -159,12 +186,16 @@ class Report:
         # Criteria 3: Image Compression
         criteria_3 = criteria_img_compression(self.file_paths['img'])
 
+        # Criteria 4: Minify files
+        criteria_4 = criteria_minified_files(self.file_paths)
+
         # Combine
         criterias = [
             criteria_0,
             criteria_1,
             criteria_2,
-            criteria_3
+            criteria_3,
+            criteria_4
         ]
 
         # End
