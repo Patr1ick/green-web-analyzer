@@ -3,7 +3,7 @@ import os
 # Image Proccessing
 from PIL import Image
 
-from css_html_js_minify import process_single_js_file
+from css_html_js_minify import process_single_js_file, process_single_css_file
 
 
 def criteria_requests(requests) -> dict:
@@ -115,7 +115,6 @@ def criteria_minified_files(file_paths) -> dict:
     }
     # JavaScript files
     for js in file_paths['js']:
-        # minified_files['js'].append(js['path'])
         output = f"{js['path']}.min.js"
         process_single_js_file(js['path'], overwrite=False, output_path=output)
         actual_size = os.path.getsize(js['path'])
@@ -123,7 +122,19 @@ def criteria_minified_files(file_paths) -> dict:
         if actual_size > output_size:
             minified_files['js'].append({
                 "url": js['url'],
-                "path": js['path'],
+                "actual_size": actual_size,
+                "minified_size": output_size
+            })
+
+    for css in file_paths['css']:
+        output = f"{css['path']}.min.css"
+        process_single_css_file(
+            css['path'], overwrite=False, output_path=output)
+        actual_size = os.path.getsize(css['path'])
+        output_size = os.path.getsize(output)
+        if actual_size > output_size:
+            minified_files['css'].append({
+                "url": css['url'],
                 "actual_size": actual_size,
                 "minified_size": output_size
             })
