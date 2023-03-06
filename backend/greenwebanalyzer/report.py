@@ -20,7 +20,7 @@ from .utils import create_folder, delete_folder
 class Report:
     """Creates a report of a website"""
 
-    def __init__(self, url) -> None:
+    def __init__(self, url, app=None) -> None:
         """
         Parameter
         ---
@@ -47,6 +47,8 @@ class Report:
 
         self.driver = webdriver.Chrome(options=self.options)
         self.driver.set_window_size(1920, 1080)
+
+        self.app = app
 
     def request_page(self) -> None:
         del self.driver.requests
@@ -82,56 +84,62 @@ class Report:
                             'Content-Encoding', 'identity')
                     )
                     path = request.path
-                    if "text/html" in request.response.headers['Content-Type']:
-                        # Root file (ex. "/")
-                        if request.path[len(path)-1] == "/":
-                            file_name = "/index.html"
-                        # Sub-Domain file (ex. /de )
-                        elif ".html" not in path:
-                            file_name = path + ".html"
+
+                    if request.response.headers['Content-Type'] != None:
+
+                        if "text/html" in request.response.headers['Content-Type']:
+                            # Root file (ex. "/")
+                            if request.path[len(path)-1] == "/":
+                                file_name = "/index.html"
+                            # Sub-Domain file (ex. /de )
+                            elif ".html" not in path:
+                                file_name = path + ".html"
+                        else:
+                            file_name = path
+
+                        # Add to file_paths
+                        if "text/html" in request.response.headers['Content-Type']:
+                            file_type = "html"
+                        elif "text/css" in request.response.headers['Content-Type']:
+                            file_type = "css"
+                        elif "text/javascript" in request.response.headers['Content-Type'] or "application/javascript" in request.response.headers['Content-Type']:
+                            file_type = "js"
+                        # SVG can have additional information in the Content-Type, like "image/svg+xml; charset=utf-8"
+                        elif "image/svg+xml" in request.response.headers['Content-Type']:
+                            file_type = "svg"
+                        elif request.response.headers['Content-Type'] in ["image/gif", "image/jpeg", "image/png", "image/svg+xml", "image/webp"]:
+                            file_type = "img"
+
+                        # Especially for PHP pages
+                        if path in existing_files:
+                            if file_type == "img":
+                                match request.response.headers['Content-Type']:
+                                    case "image/gif":
+                                        file_name = f"{file_name}-{time.time()}.gif"
+                                    case "image/jpeg":
+                                        file_name = f"{file_name}-{time.time()}.jpeg"
+                                    case "image/png":
+                                        file_name = f"{file_name}-{time.time()}.png"
+                                    case "image/svg+xml":
+                                        file_name = f"{file_name}-{time.time()}.svg"
+                                    case "image/webp":
+                                        file_name = f"{file_name}-{time.time()}.webp"
+                            else:
+                                file_name = f"{file_name}-{time.time()}.{file_type}"
+
+                        file_path = f"./{self.folder_name}{file_name}"
+                        folder_path = f"./{self.folder_name}{os.path.dirname(file_name)}"
+
+                        self.file_paths[file_type].append({
+                            "url": request.url,
+                            "path": file_path,
+                            "type": request.response.headers['Content-Type']
+                        })
                     # Default
                     else:
-                        file_name = path
+                        file_path = f"./{self.folder_name}{path}"
+                        folder_path = f"./{self.folder_name}{os.path.dirname(path)}"
 
-                    # Add to file_paths
-                    if "text/html" in request.response.headers['Content-Type']:
-                        file_type = "html"
-                    elif "text/css" in request.response.headers['Content-Type']:
-                        file_type = "css"
-                    elif "text/javascript" in request.response.headers['Content-Type'] or "application/javascript" in request.response.headers['Content-Type']:
-                        file_type = "js"
-                    # SVG can have additional information in the Content-Type, like "image/svg+xml; charset=utf-8"
-                    elif "image/svg+xml" in request.response.headers['Content-Type']:
-                        file_type = "svg"
-                    elif request.response.headers['Content-Type'] in ["image/gif", "image/jpeg", "image/png", "image/svg+xml", "image/webp"]:
-                        file_type = "img"
-
-                    # Especially for PHP pages
-                    if path in existing_files:
-                        if file_type == "img":
-                            match request.response.headers['Content-Type']:
-                                case "image/gif":
-                                    file_name = f"{path}?{time.time()}.gif"
-                                case "image/jpeg":
-                                    file_name = f"{path}?{time.time()}.jpeg"
-                                case "image/png":
-                                    file_name = f"{path}?{time.time()}.png"
-                                case "image/svg+xml":
-                                    file_name = f"{path}?{time.time()}.svg"
-                                case "image/webp":
-                                    file_name = f"{path}?{time.time()}.webp"
-                        else:
-                            file_name = f"{path}?{time.time()}.{file_type}"
-
-                    # Set paths
-                    file_path = f"./{self.folder_name}{file_name}"
-                    folder_path = f"./{self.folder_name}{os.path.dirname(file_name)}"
-
-                    self.file_paths[file_type].append({
-                        "url": request.url,
-                        "path": file_path,
-                        "type": request.response.headers['Content-Type']
-                    })
                     # Write to file
                     os.makedirs(
                         folder_path,
@@ -171,7 +179,7 @@ class Report:
         # Request the page with Selenium Wire
         self.request_page()
 
-        # Request page with Selenium Wire
+        # Save the page
         self.save_page()
 
         # Criteria 0: Outgoing Request
@@ -187,7 +195,7 @@ class Report:
         criteria_3 = criteria_img_compression(self.file_paths['img'])
 
         # Criteria 4: Minify files
-        criteria_4 = criteria_minified_files(self.file_paths)
+        criteria_4 = criteria_minified_files(self.file_paths, self.app)
 
         # Combine
         criterias = [

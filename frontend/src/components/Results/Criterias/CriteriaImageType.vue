@@ -7,7 +7,7 @@
         </template>
         <template #details>
             <div class="overflow-x-auto">
-                <table class="w-full p-4 border-separate border-spacing-1 ">
+                <table class="w-full p-4 border-separate border-spacing-1">
                     <thead class="dark:bg-opacity-25 bg-gray-800">
                         <tr>
                             <th class="border border-gray-600 px-2">URL</th>

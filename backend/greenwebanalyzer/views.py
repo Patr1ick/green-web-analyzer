@@ -55,7 +55,7 @@ def setupRoutes(app, limiter):
             app.logger.error("Invalid URL was given: %s", url)
             abort(400, description="No valid URL given.")
 
-        r = Report(url)
+        r = Report(url, app=app)
         report = r.create_report()
 
         response = make_response(jsonify(report), 201)

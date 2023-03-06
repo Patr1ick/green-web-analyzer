@@ -3,7 +3,7 @@ import os
 # Image Proccessing
 from PIL import Image
 
-from css_html_js_minify import process_single_js_file, process_single_css_file
+import minify
 
 
 def criteria_requests(requests) -> dict:
@@ -26,9 +26,10 @@ def criteria_redirects(requests) -> dict:
     amount = 0
     redirects = []
     for r in requests:
-        if r['response']['status_code'] == 301:
-            amount += 1
-            redirects.append(r)
+        if r['response'] != None:
+            if r['response']['status_code'] == 301:
+                amount += 1
+                redirects.append(r)
 
     return {
         "id": 1,
@@ -108,39 +109,55 @@ def criteria_img_compression(img_file_paths) -> dict:
     }
 
 
-def criteria_minified_files(file_paths) -> dict:
+def criteria_minified_files(file_paths, app) -> dict:
     minified_files = {
         'js': [],
         'css': []
     }
+    actual_size_js = 0
+    potential_savings_js = 0
     # JavaScript files
     for js in file_paths['js']:
         output = f"{js['path']}.min.js"
-        process_single_js_file(js['path'], overwrite=False, output_path=output)
-        actual_size = os.path.getsize(js['path'])
-        output_size = os.path.getsize(output)
-        if actual_size > output_size:
-            minified_files['js'].append({
-                "url": js['url'],
-                "actual_size": actual_size,
-                "minified_size": output_size
-            })
 
+        minify.file(js['type'].split(';')[0], js['path'], output)
+
+        actual_size = os.path.getsize(js['path'])
+        actual_size_js += actual_size
+        output_size = os.path.getsize(output)
+        potential_savings = actual_size - output_size
+        potential_savings_js += potential_savings
+        minified_files['js'].append({
+            "url": js['url'],
+            "actual_size": actual_size,
+            "minified_size": output_size
+        })
+
+    actual_size_css = 0
+    potential_savings_css = 0
     for css in file_paths['css']:
         output = f"{css['path']}.min.css"
-        process_single_css_file(
-            css['path'], overwrite=False, output_path=output)
+        minify.file('text/css', css['path'], output)
         actual_size = os.path.getsize(css['path'])
+        actual_size_css += actual_size
         output_size = os.path.getsize(output)
-        if actual_size > output_size:
-            minified_files['css'].append({
-                "url": css['url'],
-                "actual_size": actual_size,
-                "minified_size": output_size
-            })
+        potential_savings = actual_size - output_size
+        potential_savings_css += potential_savings
+
+        minified_files['css'].append({
+            "url": css['url'],
+            "actual_size": actual_size,
+            "minified_size": output_size
+        })
 
     return {
         "id": 4,
         "accepted": True,
-        "details": minified_files
+        "details": {
+            "files": minified_files,
+            "actual_size_js": actual_size_js,
+            "actual_size_css": actual_size_css,
+            "potential_savings_js": potential_savings_js,
+            "potential_savings_css": potential_savings_css
+        }
     }

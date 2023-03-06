@@ -1,6 +1,6 @@
 FROM python:slim
 
-RUN apt update && apt install -y chromium
+RUN apt update && apt install -y chromium golang-go
 
 WORKDIR /app
 COPY . /app

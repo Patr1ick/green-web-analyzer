@@ -24,7 +24,7 @@
 <script lang="ts">
 import { defineComponent } from 'vue'
 
-import { CheckCircleIcon, XCircleIcon } from '@heroicons/vue/24/solid'
+import { CheckCircleIcon, XCircleIcon, PlusIcon, MinusIcon } from '@heroicons/vue/24/solid'
 
 export default defineComponent({
     props: {
@@ -48,7 +48,7 @@ export default defineComponent({
             this.collapsed = !this.collapsed;
         }
     }, components: {
-        CheckCircleIcon, XCircleIcon
+        CheckCircleIcon, XCircleIcon, PlusIcon, MinusIcon
     }
 })
 </script>
