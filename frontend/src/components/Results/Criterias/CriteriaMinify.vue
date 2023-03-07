@@ -2,7 +2,7 @@
     <BasicAccordion :status="result.accepted">
         <template #title>
             <p class="text-gray-900 dark:text-gray-200">
-                Criteria {{ result.id }}: Minify JS
+                Criteria {{ result.id }}: Minify files
             </p>
         </template>
         <template #details>
