@@ -36,6 +36,7 @@
                 <CriteriaRedirects :result="getCriteria(1)" />
                 <CriteriaImageType :result="getCriteria(2)" />
                 <CriteriaImageCompression :result="getCriteria(3)" />
+                <CriteriaMinify :result="getCriteria(4)" />
             </section>
         </div>
     </BasicCard>
@@ -50,6 +51,7 @@ import CriteriaImageCompression from './Criterias/CriteriaImageCompression.vue'
 
 import { CriteriaModel } from '../../models/result';
 import CriteriaRedirects from './Criterias/CriteriaRedirects.vue';
+import CriteriaMinify from './Criterias/CriteriaMinify.vue';
 
 export default defineComponent({
     computed: {
@@ -77,7 +79,7 @@ export default defineComponent({
             return empty;
         }
     },
-    components: { CriteriaRequests, CriteriaImageType, CriteriaImageCompression, CriteriaRedirects }
+    components: { CriteriaRequests, CriteriaImageType, CriteriaImageCompression, CriteriaRedirects, CriteriaMinify }
 })
 </script>
 

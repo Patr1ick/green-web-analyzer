@@ -13,3 +13,4 @@ pillow
 
 # Tools
 validators
+tdewolff-minify

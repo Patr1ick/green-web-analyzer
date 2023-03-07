@@ -3,6 +3,8 @@ import os
 # Image Proccessing
 from PIL import Image
 
+import minify
+
 
 def criteria_requests(requests) -> dict:
     accepted = True
@@ -24,9 +26,10 @@ def criteria_redirects(requests) -> dict:
     amount = 0
     redirects = []
     for r in requests:
-        if r['response']['status_code'] == 301:
-            amount += 1
-            redirects.append(r)
+        if r['response'] != None:
+            if r['response']['status_code'] == 301:
+                amount += 1
+                redirects.append(r)
 
     return {
         "id": 1,
@@ -71,7 +74,8 @@ def criteria_img_types(img_file_paths) -> dict:
         "details": {
             "img": bad_images,
             "size_actual": size_actual,
-            "size_webp": size_webp
+            "size_webp": size_webp,
+            "total_savings": size_actual - size_webp
         }
     }
 
@@ -103,4 +107,66 @@ def criteria_img_compression(img_file_paths) -> dict:
         "details": {
             "img": compressed_images
         }
+    }
+
+
+def criteria_minified_files(file_paths) -> dict:
+    details = {
+        'js': {
+            'files': [],
+            'total_size': 0,
+            'total_minified_size': 0,
+            'total_savings': 0
+
+        },
+        'css': {
+            'files': [],
+            'total_size': 0,
+            'total_minified_size': 0,
+            'total_savings': 0
+
+        },
+        'html': {
+            'files': [],
+            'total_size': 0,
+            'total_minified_size': 0,
+            'total_savings': 0
+
+        },
+        'total_savings': 0
+    }
+
+    for key in ['html', 'css', 'js']:
+        for file in file_paths[key]:
+            output_path = f"{file['path']}.min.{key}"
+
+            minify.file(
+                file['type'].split(';')[0],
+                file['path'],
+                output_path
+            )
+
+            minified_size = os.path.getsize(output_path)
+            size = os.path.getsize(file['path'])
+            potential_saving = size - minified_size
+
+            # !TODO Add condition that not all savings are added
+            # Add values
+            details[key]['total_size'] += size
+            details[key]['total_minified_size'] += minified_size
+            details[key]['total_savings'] += potential_saving
+
+            # Add file
+            details[key]['files'].append({
+                "url": file['url'],
+                "size": size,
+                "minified_size": minified_size
+            })
+
+        details['total_savings'] += details[key]['total_savings']
+
+    return {
+        "id": 4,
+        "accepted": details['total_savings'] < 1000,
+        "details": details
     }

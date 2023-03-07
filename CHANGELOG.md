@@ -1,3 +1,13 @@
+## [unreleased]
+
+### Added
+
+-   Added new criteria "minify files" [#1](https://github.com/Patr1ick/green-web-analyzer/issues/1)
+
+### Fixed
+
+-   Fixed bug in views.py
+
 ## [0.2.4](https://github.com/Patr1ick/green-web-analyzer/releases/tag/0.2.4-fix)
 
 ### Added
