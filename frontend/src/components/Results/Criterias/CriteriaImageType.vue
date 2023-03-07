@@ -13,11 +13,12 @@
                             <th class="border border-gray-600 px-2">URL</th>
                             <th class="border border-gray-600 px-2">Preview</th>
                             <th class="border border-gray-600 px-2">Type</th>
-                            <th class="border border-gray-600 px-2">Actual Size</th>
-                            <th class="border border-gray-600 px-2">webp Size</th>
+                            <th class="border border-gray-600 px-2 bg-red-800 bg-opacity-20">Size</th>
+                            <th class="border border-gray-600 px-2 bg-emerald-800 bg-opacity-20">Size in Webp</th>
+                            <th class="border border-gray-600 px-2">Potential Savings</th>
                         </tr>
                     </thead>
-                    <tr v-for="img in result?.details.img" class="text-gray-800 dark:text-gray-200">
+                    <tr v-for="img in result.details.files" class="text-gray-800 dark:text-gray-200">
                         <td class="border border-gray-700 dark:border-gray-100 dark:border-opacity-25 break-all">
                             <a :href="img.url" target="_blank" class="hover:underline">
                                 {{ img.url }}
@@ -29,22 +30,29 @@
                         <td class="border border-gray-700 dark:border-gray-100 dark:border-opacity-25">
                             {{ img.type }}
                         </td>
-                        <td class="border border-gray-700 dark:border-gray-100 dark:border-opacity-25">
-                            {{ convert(img.actual_size) }}
+                        <td
+                            class="border border-gray-700 dark:border-gray-100 dark:border-opacity-25 bg-red-800 bg-opacity-20">
+                            {{ convert(img.size) }}
+                        </td>
+                        <td
+                            class="border border-gray-700 dark:border-gray-100 dark:border-opacity-25 bg-emerald-800 bg-opacity-20">
+                            {{ convert(img.size_webp) }}
                         </td>
                         <td class="border border-gray-700 dark:border-gray-100 dark:border-opacity-25">
-                            {{ convert(img.webp_size) }}
+                            - {{ convert(img.potential_saving) }}
                         </td>
                     </tr>
                     <tr class="dark:bg-opacity-25 bg-gray-800">
                         <td colspan="3" class="border border-gray-600 px-2">
-                            Summary ({{ result.details.img.length }} Images)
+                            Summary ({{ result.details.files.length }} Images)
                         </td>
-                        <td class="border border-gray-600 px-2">{{ convert(result.details.size_actual) }}</td>
+                        <td class="border border-gray-600 px-2 bg-red-800 bg-opacity-20">{{
+                            convert(result.details.total_size) }}</td>
+                        <td class="border border-gray-600 px-2 bg-emerald-800 bg-opacity-20"> {{
+                            convert(result.details.total_size_webp)
+                        }} </td>
                         <td class="border border-gray-600 px-2">
-                            {{ convert(result.details.size_webp) }} (saved {{
-                                convert(result.details.size_actual - result.details.size_webp)
-                            }})
+                            - {{ convert(result.details.total_savings) }}
                         </td>
                     </tr>
                 </table>

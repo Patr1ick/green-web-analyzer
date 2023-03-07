@@ -4,6 +4,10 @@
 
 -   Added new criteria "minify files" [#1](https://github.com/Patr1ick/green-web-analyzer/issues/1)
 
+### Updated
+
+-   Updated the criteria in the backend so that they are more consistent
+
 ### Fixed
 
 -   Fixed bug in views.py

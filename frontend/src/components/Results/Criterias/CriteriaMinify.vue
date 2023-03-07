@@ -17,8 +17,9 @@
                         <thead class="dark:bg-opacity-25 bg-gray-800">
                             <tr>
                                 <th class="border border-gray-600 px-2">URL</th>
-                                <th class="border border-gray-600 px-2">Actual Size</th>
-                                <th class="border border-gray-600 px-2">Minified Size</th>
+                                <th class="border border-gray-600 px-2 bg-red-800 bg-opacity-20">Size</th>
+                                <th class="border border-gray-600 px-2 bg-emerald-800 bg-opacity-20">Minified Size</th>
+                                <th class="border border-gray-600 px-2">Potential Savings</th>
                             </tr>
                         </thead>
                         <tr v-for="file in result.details[key].files" class="text-gray-800 dark:text-gray-200">
@@ -27,22 +28,29 @@
                                     {{ file.url }}
                                 </a>
                             </td>
-                            <td class="border border-gray-700 dark:border-gray-100 dark:border-opacity-25">
+                            <td
+                                class="border border-gray-700 dark:border-gray-100 dark:border-opacity-25 bg-red-800 bg-opacity-20">
                                 {{ convert(file.size) }}
                             </td>
-                            <td class="border border-gray-700 dark:border-gray-100 dark:border-opacity-25">
+                            <td
+                                class="border border-gray-700 dark:border-gray-100 dark:border-opacity-25 bg-emerald-800 bg-opacity-20">
                                 {{ convert(file.minified_size) }}
+                            </td>
+                            <td class="border border-gray-700 dark:border-gray-100 dark:border-opacity-25">
+                                - {{ convert(file.potential_saving) }}
                             </td>
                         </tr>
                         <tr class="dark:bg-opacity-25 bg-gray-800">
                             <td class="border border-gray-600 px-2">
                                 Summary
                             </td>
-                            <td class="border border-gray-600 px-2">{{ convert(result.details[key].total_size) }}</td>
-                            <td class="border border-gray-600 px-2">
-                                {{ convert(result.details[key].total_minified_size) }} (Saved {{
-                                    convert(result.details[key].total_savings) }})
+                            <td class="border border-gray-600 px-2 bg-red-800 bg-opacity-20">
+                                {{ convert(result.details[key].total_size) }}</td>
+                            <td class="border border-gray-600 px-2 bg-emerald-800 bg-opacity-20">
+                                {{ convert(result.details[key].total_minified_size) }}
                             </td>
+                            <td class="border border-gray-600 px-2">
+                                - {{ convert(result.details[key].total_savings) }}</td>
                         </tr>
                     </table>
                 </div>

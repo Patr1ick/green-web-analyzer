@@ -23,29 +23,33 @@ def criteria_requests(requests) -> dict:
 
 
 def criteria_redirects(requests) -> dict:
-    amount = 0
-    redirects = []
+    details = {
+        "amount": 0,
+        "redirects": [],
+    }
     for r in requests:
         if r['response'] != None:
             if r['response']['status_code'] == 301:
-                amount += 1
-                redirects.append(r)
+                details['amount'] += 1
+                details['redirects'].append(r)
 
     return {
         "id": 1,
-        "accepted": amount < 1,
-        "details": {
-            "amount": amount,
-            "redirects": redirects,
-        }
+        "accepted": details['amount'] < 1,
+        "details": details
     }
 
 
 def criteria_img_types(img_file_paths) -> dict:
-    bad_images = []
-    size_actual, size_webp = 0, 0
+    details = {
+        "files": [],
+        "total_size": 0,
+        "total_size_webp": 0,
+        "total_savings": 0
+    }
+
     for img in img_file_paths:
-        if img['type'] == "image/jpeg" or img['type'] == "image/png" or img['type'] == "image/gif":
+        if img['type'] in ["image/jpeg", "image/png", "image/gif"]:
 
             # Convert to webp
             webp_path = f"{img['path']}.webp"
@@ -53,60 +57,66 @@ def criteria_img_types(img_file_paths) -> dict:
             image = Image.open(img['path'])
             image.save(webp_path, format="webp")
 
-            img_size = os.path.getsize(img['path'])
-            img_webp_size = os.path.getsize(webp_path)
+            size = os.path.getsize(img['path'])
+            size_webp = os.path.getsize(webp_path)
+            potential_saving = size - size_webp
 
-            bad_images.append({
+            details['total_size'] += size
+            details['total_size_webp'] += size_webp
+            details['total_savings'] += potential_saving
+
+            details['files'].append({
                 "url": img['url'],
                 "type": img['type'],
-                "actual_size": img_size,
-                "webp_size": img_webp_size
+                "size": size,
+                "size_webp": size_webp,
+                "potential_saving": potential_saving
             })
-
-            size_actual += img_size
-            size_webp += img_webp_size
 
             os.remove(webp_path)
 
     return {
         "id": 2,
-        "accepted": len(bad_images) == 0,
-        "details": {
-            "img": bad_images,
-            "size_actual": size_actual,
-            "size_webp": size_webp,
-            "total_savings": size_actual - size_webp
-        }
+        "accepted": len(details['files']) == 0,
+        "details": details
     }
 
 
 def criteria_img_compression(img_file_paths) -> dict:
-    compressed_images = []
+    details = {
+        "files": [],
+        "total_size": 0,
+        "total_size_compressed": 0,
+        "total_savings": 0
+    }
     for img in img_file_paths:
         if img['type'] == "image/jpeg":
-            actual_size = os.path.getsize(img['path'])
 
             im = Image.open(img['path'])
             im.save(img['path'] + 'buffer.jpeg', "JPEG", quality=50)
 
+            size = os.path.getsize(img['path'])
             compressed_size = os.path.getsize(img['path'] + 'buffer.jpeg')
+            potential_saving = size - compressed_size
 
-            if compressed_size < actual_size:
-                compressed_images.append({
+            if potential_saving > 1000:
+                details['total_size'] += size
+                details['total_size_compressed'] += compressed_size
+                details['total_savings'] += potential_saving
+                details['files'].append({
                     "url": img['url'],
                     "type": img['type'],
-                    "actual_size": actual_size,
-                    "compressed_size": compressed_size
+                    "size": size,
+                    "size_compressed": compressed_size,
+                    "potential_saving": potential_saving
                 })
 
             os.remove(img['path'] + 'buffer.jpeg')
 
     return {
         "id": 3,
-        "accepted": len(compressed_images) == 0,
-        "details": {
-            "img": compressed_images
-        }
+        "accepted": len(details['files']) == 0,
+        "details": details
     }
 
 
@@ -160,7 +170,8 @@ def criteria_minified_files(file_paths) -> dict:
             details[key]['files'].append({
                 "url": file['url'],
                 "size": size,
-                "minified_size": minified_size
+                "minified_size": minified_size,
+                "potential_saving": potential_saving
             })
 
         details['total_savings'] += details[key]['total_savings']
