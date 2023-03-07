@@ -74,7 +74,8 @@ def criteria_img_types(img_file_paths) -> dict:
         "details": {
             "img": bad_images,
             "size_actual": size_actual,
-            "size_webp": size_webp
+            "size_webp": size_webp,
+            "total_savings": size_actual - size_webp
         }
     }
 
@@ -132,6 +133,7 @@ def criteria_minified_files(file_paths) -> dict:
             'total_savings': 0
 
         },
+        'total_savings': 0
     }
 
     for key in ['html', 'css', 'js']:
@@ -161,8 +163,10 @@ def criteria_minified_files(file_paths) -> dict:
                 "minified_size": minified_size
             })
 
+        details['total_savings'] += details[key]['total_savings']
+
     return {
         "id": 4,
-        "accepted": True,
+        "accepted": details['total_savings'] < 1000,
         "details": details
     }

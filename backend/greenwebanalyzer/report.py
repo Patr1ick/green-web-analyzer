@@ -217,7 +217,7 @@ class Report:
         metrics = {
             "size": self.full_size,
             "requests": amount_requests,
-            "potential_savings": criteria_2['details']['size_actual'] - criteria_2['details']['size_webp']
+            "potential_savings": criteria_2['details']['total_savings'] + criteria_4['details']['total_savings']
         }
 
         # Create report
