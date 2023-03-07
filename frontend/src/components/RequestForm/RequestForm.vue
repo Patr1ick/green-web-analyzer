@@ -4,9 +4,6 @@
             Request a report from a Website
         </h1>
         <form @submit.prevent="requestReport" class="flex flex-wrap justify-center content-center my-4">
-            <!-- <input id="url" type="url" v-model="url"
-                class="grow text-gray-900 dark:text-gray-400 text-center font-bold bg-opacity-5 bg-emerald-800 border-2 border-solid rounded-sm border-emerald-600 h-14"
-                placeholder="https://www.example.com" /> -->
             <RequestInput v-model="url" />
             <BasicButton type="submit" :disabled="isLoading" class="mr-0">
                 Submit
@@ -23,7 +20,7 @@
                 <p>
                     If the error still occurs, please create an issue at
                 </p>
-                <a href="https://github.com/Patr1ick/green-web-analyzer/issues" target="_blank"
+                <a href="https://github.com/Patr1ick/green-web-analyzer/issues/new/choose" target="_blank"
                     class="flex gap-1 justify-center">
                     GitHub
                     <LinkIcon class="w-4 text-gray-200" />
