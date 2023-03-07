@@ -195,7 +195,7 @@ class Report:
         criteria_3 = criteria_img_compression(self.file_paths['img'])
 
         # Criteria 4: Minify files
-        criteria_4 = criteria_minified_files(self.file_paths, self.app)
+        criteria_4 = criteria_minified_files(self.file_paths)
 
         # Combine
         criterias = [

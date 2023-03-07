@@ -109,55 +109,60 @@ def criteria_img_compression(img_file_paths) -> dict:
     }
 
 
-def criteria_minified_files(file_paths, app) -> dict:
-    minified_files = {
-        'js': [],
-        'css': []
+def criteria_minified_files(file_paths) -> dict:
+    details = {
+        'js': {
+            'files': [],
+            'total_size': 0,
+            'total_minified_size': 0,
+            'total_savings': 0
+
+        },
+        'css': {
+            'files': [],
+            'total_size': 0,
+            'total_minified_size': 0,
+            'total_savings': 0
+
+        },
+        'html': {
+            'files': [],
+            'total_size': 0,
+            'total_minified_size': 0,
+            'total_savings': 0
+
+        },
     }
-    actual_size_js = 0
-    potential_savings_js = 0
-    # JavaScript files
-    for js in file_paths['js']:
-        output = f"{js['path']}.min.js"
 
-        minify.file(js['type'].split(';')[0], js['path'], output)
+    for key in ['html', 'css', 'js']:
+        for file in file_paths[key]:
+            output_path = f"{file['path']}.min.{key}"
 
-        actual_size = os.path.getsize(js['path'])
-        actual_size_js += actual_size
-        output_size = os.path.getsize(output)
-        potential_savings = actual_size - output_size
-        potential_savings_js += potential_savings
-        minified_files['js'].append({
-            "url": js['url'],
-            "actual_size": actual_size,
-            "minified_size": output_size
-        })
+            minify.file(
+                file['type'].split(';')[0],
+                file['path'],
+                output_path
+            )
 
-    actual_size_css = 0
-    potential_savings_css = 0
-    for css in file_paths['css']:
-        output = f"{css['path']}.min.css"
-        minify.file('text/css', css['path'], output)
-        actual_size = os.path.getsize(css['path'])
-        actual_size_css += actual_size
-        output_size = os.path.getsize(output)
-        potential_savings = actual_size - output_size
-        potential_savings_css += potential_savings
+            minified_size = os.path.getsize(output_path)
+            size = os.path.getsize(file['path'])
+            potential_saving = size - minified_size
 
-        minified_files['css'].append({
-            "url": css['url'],
-            "actual_size": actual_size,
-            "minified_size": output_size
-        })
+            # !TODO Add condition that not all savings are added
+            # Add values
+            details[key]['total_size'] += size
+            details[key]['total_minified_size'] += minified_size
+            details[key]['total_savings'] += potential_saving
+
+            # Add file
+            details[key]['files'].append({
+                "url": file['url'],
+                "size": size,
+                "minified_size": minified_size
+            })
 
     return {
         "id": 4,
         "accepted": True,
-        "details": {
-            "files": minified_files,
-            "actual_size_js": actual_size_js,
-            "actual_size_css": actual_size_css,
-            "potential_savings_js": potential_savings_js,
-            "potential_savings_css": potential_savings_css
-        }
+        "details": details
     }
