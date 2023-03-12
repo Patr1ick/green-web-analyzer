@@ -33,11 +33,12 @@
             <h2 class="text-2xl mt-4">Criterias</h2>
             <section class="w-full xl:w-3/4 2xl:w-4/5 m-auto">
                 <CriteriaRequests :result="getCriteria(0)" />
-                <CriteriaRedirects :result="getCriteria(1)" />
-                <CriteriaImageType :result="getCriteria(2)" />
-                <CriteriaImageCompression :result="getCriteria(3)" />
-                <CriteriaImageLazyLoad :result="getCriteria(4)" />
-                <CriteriaMinify :result="getCriteria(5)" />
+                <CriteriaMassivePayloads :result="getCriteria(1)" />
+                <CriteriaRedirects :result="getCriteria(2)" />
+                <CriteriaImageType :result="getCriteria(3)" />
+                <CriteriaImageCompression :result="getCriteria(4)" />
+                <CriteriaImageLazyLoad :result="getCriteria(5)" />
+                <CriteriaMinify :result="getCriteria(6)" />
             </section>
         </div>
     </BasicCard>
@@ -54,6 +55,7 @@ import { CriteriaModel } from '../../models/result';
 import CriteriaRedirects from './Criterias/CriteriaRedirects.vue';
 import CriteriaMinify from './Criterias/CriteriaMinify.vue';
 import CriteriaImageLazyLoad from './Criterias/Images/CriteriaImageLazyLoad.vue';
+import CriteriaMassivePayloads from './Criterias/CriteriaMassivePayloads.vue';
 
 export default defineComponent({
     computed: {
@@ -81,7 +83,7 @@ export default defineComponent({
             return empty;
         }
     },
-    components: { CriteriaRequests, CriteriaImageType, CriteriaImageCompression, CriteriaRedirects, CriteriaMinify, CriteriaImageLazyLoad }
+    components: { CriteriaRequests, CriteriaImageType, CriteriaImageCompression, CriteriaRedirects, CriteriaMinify, CriteriaImageLazyLoad, CriteriaMassivePayloads }
 })
 </script>
 
