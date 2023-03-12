@@ -13,7 +13,7 @@ import pytz
 import os
 
 # Criterias
-from .criteria import criteria_requests, criteria_img_types, criteria_img_compression, criteria_redirects, criteria_minified_files, criteria_img_lazy_loaded
+from .criteria import criteria_requests, criteria_img_types, criteria_img_compression, criteria_redirects, criteria_minified_files, criteria_img_lazy_loaded, criteria_request_payload
 
 from .utils import create_folder, delete_folder
 
@@ -42,6 +42,7 @@ class Report:
             "js": [],
             "img": [],
             "svg": [],
+            "other": []
         }
 
         self.folder_name = f"request-{time.time()}"
@@ -112,6 +113,8 @@ class Report:
                             file_type = "svg"
                         elif request.response.headers['Content-Type'] in ["image/gif", "image/jpeg", "image/png", "image/svg+xml", "image/webp"]:
                             file_type = "img"
+                        else:
+                            file_type = "other"
 
                         # Especially for PHP pages
                         if path in existing_files:
@@ -185,23 +188,26 @@ class Report:
         # Save the page
         self.save_page()
 
-        # Criteria 0: Outgoing Request
+        # Criteria 0: Outgoing Requests
         criteria_0 = criteria_requests(self.requests)
 
-        # Criteria 1: Redirects
-        criteria_1 = criteria_redirects(self.requests)
+        # Criteria 0: Outgoing Request
+        criteria_1 = criteria_request_payload(self.requests)
 
-        # Criteria 2: Images Types
-        criteria_2 = criteria_img_types(self.file_paths['img'])
+        # Criteria 2: Redirects
+        criteria_2 = criteria_redirects(self.requests)
 
-        # Criteria 3: Image Compression
-        criteria_3 = criteria_img_compression(self.file_paths['img'])
+        # Criteria 3: Images Types
+        criteria_3 = criteria_img_types(self.file_paths['img'])
 
-        # Criteria 3: Image Lazy loaded
-        criteria_4 = criteria_img_lazy_loaded(self.driver, self.requests)
+        # Criteria 4: Image Compression
+        criteria_4 = criteria_img_compression(self.file_paths['img'])
 
-        # Criteria 4: Minify files
-        criteria_5 = criteria_minified_files(self.file_paths)
+        # Criteria 5: Image Lazy loaded
+        criteria_5 = criteria_img_lazy_loaded(self.driver, self.requests)
+
+        # Criteria 6: Minify files
+        criteria_6 = criteria_minified_files(self.file_paths)
 
         # Combine
         criterias = [
@@ -211,6 +217,7 @@ class Report:
             criteria_3,
             criteria_4,
             criteria_5,
+            criteria_6,
         ]
 
         # End
@@ -224,7 +231,7 @@ class Report:
         metrics = {
             "size": self.full_size,
             "requests": amount_requests,
-            "potential_savings": criteria_2['details']['total_savings'] + criteria_5['details']['total_savings']
+            "potential_savings": criteria_3['details']['total_savings'] + criteria_6['details']['total_savings']
         }
 
         # Create report

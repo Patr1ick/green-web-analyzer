@@ -24,6 +24,23 @@ def criteria_requests(requests) -> dict:
     }
 
 
+def criteria_request_payload(request) -> dict:
+    details = {
+        'requests': []
+    }
+
+    for r in request:
+        if r['size'] is not None:
+            if r['size'] > 500000:  # 500.000 -> 500 KB -> 0,5 MB
+                details['requests'].append(r)
+
+    return {
+        'id': 1,
+        'accepted': len(details['requests']) == 0,
+        'details': details
+    }
+
+
 def criteria_redirects(requests) -> dict:
     details = {
         "amount": 0,
@@ -36,7 +53,7 @@ def criteria_redirects(requests) -> dict:
                 details['redirects'].append(r)
 
     return {
-        "id": 1,
+        "id": 2,
         "accepted": details['amount'] < 1,
         "details": details
     }
@@ -78,7 +95,7 @@ def criteria_img_types(img_file_paths) -> dict:
             os.remove(webp_path)
 
     return {
-        "id": 2,
+        "id": 3,
         "accepted": len(details['files']) == 0,
         "details": details
     }
@@ -95,7 +112,10 @@ def criteria_img_compression(img_file_paths) -> dict:
         if img['type'] == "image/jpeg":
 
             im = Image.open(img['path'])
-            im.save(img['path'] + 'buffer.jpeg', "JPEG", quality=50)
+            try:
+                im.save(img['path'] + 'buffer.jpeg', "JPEG", quality=50)
+            except OSError:
+                continue
 
             size = os.path.getsize(img['path'])
             compressed_size = os.path.getsize(img['path'] + 'buffer.jpeg')
@@ -116,7 +136,7 @@ def criteria_img_compression(img_file_paths) -> dict:
             os.remove(img['path'] + 'buffer.jpeg')
 
     return {
-        "id": 3,
+        "id": 4,
         "accepted": len(details['files']) == 0,
         "details": details
     }
@@ -129,8 +149,14 @@ def criteria_img_lazy_loaded(webdriver: webdriver.Chrome, requests):
 
     images = webdriver.find_elements(By.TAG_NAME, 'img')
 
+    accepted = True
+
     for element in images:
         src = element.get_attribute('src')
+
+        if src == None or src == "":
+            continue
+
         is_visible = is_element_visible_in_viewpoint(
             driver=webdriver,
             element=element
@@ -141,22 +167,24 @@ def criteria_img_lazy_loaded(webdriver: webdriver.Chrome, requests):
                 is_loaded = True
 
         if is_loaded and not is_visible:
-            details['files'].append({
-                'url': src,
-                'is_visible': is_visible,
-                'is_loaded':  is_loaded
-            })
+            accepted = False
+
+        details['files'].append({
+            'url': src,
+            'is_visible': is_visible,
+            'is_loaded':  is_loaded
+        })
 
     return {
-        'id': 4,
-        'accepted': len(details['files']) == 0,
+        'id': 5,
+        'accepted': accepted,
         'details': details
     }
 
 
 def is_element_visible_in_viewpoint(driver: webdriver.Chrome, element) -> bool:
     return driver.execute_script("""
-        var elem = arguments[0], 
+        var elem = arguments[0],
             box = elem.getBoundingClientRect(),
             cx = box.x + box.width / 2,
             cy = box.y + box.height / 2,
@@ -227,7 +255,7 @@ def criteria_minified_files(file_paths) -> dict:
         details['total_savings'] += details[key]['total_savings']
 
     return {
-        "id": 5,
+        "id": 6,
         "accepted": details['total_savings'] < 1000,
         "details": details
     }
