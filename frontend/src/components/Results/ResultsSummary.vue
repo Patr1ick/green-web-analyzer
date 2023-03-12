@@ -36,6 +36,7 @@
                 <CriteriaRedirects :result="getCriteria(1)" />
                 <CriteriaImageType :result="getCriteria(2)" />
                 <CriteriaImageCompression :result="getCriteria(3)" />
+                <CriteriaImageLazyLoad :result="getCriteria(4)" />
                 <CriteriaMinify :result="getCriteria(5)" />
             </section>
         </div>
@@ -45,13 +46,14 @@
 <script lang="ts">
 import { defineComponent } from 'vue';
 import convertBytesToString from '../../utils/functions'
-import CriteriaImageType from './Criterias/CriteriaImageType.vue';
+import CriteriaImageType from './Criterias/Images/CriteriaImageType.vue';
 import CriteriaRequests from './Criterias/CriteriaRequests.vue';
-import CriteriaImageCompression from './Criterias/CriteriaImageCompression.vue'
+import CriteriaImageCompression from './Criterias/Images/CriteriaImageCompression.vue'
 
 import { CriteriaModel } from '../../models/result';
 import CriteriaRedirects from './Criterias/CriteriaRedirects.vue';
 import CriteriaMinify from './Criterias/CriteriaMinify.vue';
+import CriteriaImageLazyLoad from './Criterias/Images/CriteriaImageLazyLoad.vue';
 
 export default defineComponent({
     computed: {
@@ -79,7 +81,7 @@ export default defineComponent({
             return empty;
         }
     },
-    components: { CriteriaRequests, CriteriaImageType, CriteriaImageCompression, CriteriaRedirects, CriteriaMinify }
+    components: { CriteriaRequests, CriteriaImageType, CriteriaImageCompression, CriteriaRedirects, CriteriaMinify, CriteriaImageLazyLoad }
 })
 </script>
 
