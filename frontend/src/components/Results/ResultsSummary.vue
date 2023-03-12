@@ -36,7 +36,7 @@
                 <CriteriaRedirects :result="getCriteria(1)" />
                 <CriteriaImageType :result="getCriteria(2)" />
                 <CriteriaImageCompression :result="getCriteria(3)" />
-                <CriteriaMinify :result="getCriteria(4)" />
+                <CriteriaMinify :result="getCriteria(5)" />
             </section>
         </div>
     </BasicCard>

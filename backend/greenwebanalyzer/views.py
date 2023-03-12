@@ -59,10 +59,16 @@ def setupRoutes(app, limiter):
         report = r.create_report()
 
         response = make_response(jsonify(report), 201)
-        response.headers.add(
-            "Access-Control-Allow-Origin",
-            "https://green-web-analyzer.eu"
-        )
+        if os.getenv('APP_ENVIRONMENT') == "local" or os.getenv('APP_ENVIRONMENT') == "debug":
+            response.headers.add(
+                "Access-Control-Allow-Origin",
+                "*"
+            )
+        else:
+            response.headers.add(
+                "Access-Control-Allow-Origin",
+                "https://green-web-analyzer.eu"
+            )
         return response
 
     @app.after_request
