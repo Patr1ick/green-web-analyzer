@@ -1,1 +1,1 @@
-from .criteria import criteria_requests, criteria_img_types, criteria_img_compression, criteria_redirects, criteria_minified_files, criteria_img_lazy_loaded
+from .criteria import criteria_requests, criteria_img_types, criteria_img_compression, criteria_redirects, criteria_minified_files, criteria_img_lazy_loaded, criteria_request_payload
