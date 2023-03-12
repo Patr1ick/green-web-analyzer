@@ -1,4 +1,6 @@
 import os
+from seleniumwire import webdriver
+from selenium.webdriver.common.by import By
 
 # Image Proccessing
 from PIL import Image
@@ -120,6 +122,54 @@ def criteria_img_compression(img_file_paths) -> dict:
     }
 
 
+def criteria_img_lazy_loaded(webdriver: webdriver.Chrome, requests):
+    details = {
+        "files": [],
+    }
+
+    images = webdriver.find_elements(By.TAG_NAME, 'img')
+
+    for element in images:
+        src = element.get_attribute('src')
+        is_visible = is_element_visible_in_viewpoint(
+            driver=webdriver,
+            element=element
+        )
+        is_loaded = False
+        for r in requests:
+            if r['url'] == src:
+                is_loaded = True
+
+        if is_loaded and not is_visible:
+            details['files'].append({
+                'url': src,
+                'is_visible': is_visible,
+                'is_loaded':  is_loaded
+            })
+
+    return {
+        'id': 4,
+        'accepted': len(details['files']) == 0,
+        'details': details
+    }
+
+
+def is_element_visible_in_viewpoint(driver: webdriver.Chrome, element) -> bool:
+    return driver.execute_script("""
+        var elem = arguments[0], 
+            box = elem.getBoundingClientRect(),
+            cx = box.x + box.width / 2,
+            cy = box.y + box.height / 2,
+            e = document.elementFromPoint(cx, cy);
+        for (; e; e = e.parentElement) {
+            if (e == elem) {
+                return true;
+            }
+        }
+        return false;
+    """, element)
+
+
 def criteria_minified_files(file_paths) -> dict:
     details = {
         'js': {
@@ -177,7 +227,7 @@ def criteria_minified_files(file_paths) -> dict:
         details['total_savings'] += details[key]['total_savings']
 
     return {
-        "id": 4,
+        "id": 5,
         "accepted": details['total_savings'] < 1000,
         "details": details
     }

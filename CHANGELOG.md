@@ -3,6 +3,7 @@
 ### Added
 
 -   Added new criteria "minify files" [#1](https://github.com/Patr1ick/green-web-analyzer/issues/1)
+-   Added new criteria "images lazy loaded" [#4](https://github.com/Patr1ick/green-web-analyzer/issues/4)
 
 ### Updated
 
@@ -11,6 +12,7 @@
 ### Fixed
 
 -   Fixed bug in views.py
+-   Fixed that really all requests are registered
 
 ## [0.2.4](https://github.com/Patr1ick/green-web-analyzer/releases/tag/0.2.4-fix)
 

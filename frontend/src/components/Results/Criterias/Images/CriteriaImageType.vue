@@ -64,8 +64,8 @@
 
 <script lang="ts">
 import { defineComponent, PropType } from 'vue';
-import { CriteriaModel } from '../../../models/result';
-import convertBytesToString from '../../../utils/functions'
+import { CriteriaModel } from '../../../../models/result';
+import convertBytesToString from '../../../../utils/functions'
 
 export default defineComponent({
     props: {
