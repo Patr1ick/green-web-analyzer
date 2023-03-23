@@ -11,22 +11,22 @@
             <table class="flex flex-wrap justify-center">
                 <tr class="metrics-row">
                     <div class="metric">
-                        <h3>Size in Bytes</h3>
+                        <h3>Size</h3>
                         <p>{{ convert(results?.metrics.size) }}</p>
                     </div>
                     <div class="metric">
-                        <h3>Amount of outgoing Requests</h3>
-                        <p>{{ results?.metrics.requests }}</p>
+                        <h3>Estimated CO2 emissions</h3>
+                        <p>{{ getEmissions(results!.metrics.size, results?.metrics.green.green) }}g</p>
                     </div>
                 </tr>
                 <tr class="metrics-row">
                     <div class="metric">
-                        <h3>Potential Savings in Bytes</h3>
-                        <p>{{ convert(results?.metrics.potential_savings) }}</p>
+                        <h3>Outgoing Requests</h3>
+                        <p>{{ results?.metrics.requests }}</p>
                     </div>
                     <div class="metric">
-                        <h3>Metric #4</h3>
-                        <p>Value</p>
+                        <h3>Potential Savings</h3>
+                        <p>{{ convert(results?.metrics.potential_savings) }}</p>
                     </div>
                 </tr>
             </table>
@@ -36,14 +36,14 @@
                     <CheckCircleIcon class="w-8 h-auto text-emerald-600" />
                     This website is using green enery.
                 </div>
-                <div v-if="!results?.metrics.green.green" class="flex justify-center items-center gap-4 text-lg">
+                <div v-else class="flex justify-center items-center gap-4 text-lg">
                     <XCircleIcon class="w-8 h-auto text-rose-800" />
                     This website is not using green enery.
                 </div>
                 <p v-if="results?.metrics.green.hosted_by !== ''" class="text-xs">
                     (Hosted on {{ results?.metrics.green.hosted_by }})
                 </p>
-                <div v-if="results?.metrics.green.details !== null" class="mt-4">
+                <div v-if="results?.metrics.green.details && results?.metrics.green.details.length !== 0" class="mt-4">
                     <h4 class="text-lg"> More Information</h4>
                     <div v-for="doc in results?.metrics.green.details" class="text-xs">
                         <a :href="doc.link" target="_blank" class="hover:underline">{{ doc.title }}</a>
@@ -70,13 +70,14 @@ import convertBytesToString from '../../utils/functions'
 import CriteriaImageType from './Criterias/Images/CriteriaImageType.vue';
 import CriteriaRequests from './Criterias/CriteriaRequests.vue';
 import CriteriaImageCompression from './Criterias/Images/CriteriaImageCompression.vue'
-
 import { CriteriaModel } from '../../models/result';
 import CriteriaRedirects from './Criterias/CriteriaRedirects.vue';
 import CriteriaMinify from './Criterias/CriteriaMinify.vue';
 import CriteriaImageLazyLoad from './Criterias/Images/CriteriaImageLazyLoad.vue';
 import CriteriaMassivePayloads from './Criterias/CriteriaMassivePayloads.vue';
 import { CheckCircleIcon, XCircleIcon } from '@heroicons/vue/24/solid'
+
+import { co2 } from '@tgwf/co2'
 
 export default defineComponent({
     computed: {
@@ -102,6 +103,12 @@ export default defineComponent({
                 details: null
             };
             return empty;
+        },
+        getEmissions(bytes: number, green_hosting: boolean): number {
+
+            const model = new co2()
+
+            return Math.round(model.perByte(bytes, green_hosting) * 1000) / 1000
         }
     },
     components: {
