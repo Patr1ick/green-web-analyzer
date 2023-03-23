@@ -1,3 +1,9 @@
+## [unreleased]()
+
+### Added
+
+-   Added new metric "website is using green energy" [#14](https://github.com/Patr1ick/green-web-analyzer/issues/14)
+
 ## [0.2.5](https://github.com/Patr1ick/green-web-analyzer/releases/tag/0.2.5)
 
 ### Added
