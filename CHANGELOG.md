@@ -1,4 +1,4 @@
-## [unreleased]()
+## [0.2.6](https://github.com/Patr1ick/green-web-analyzer/releases/tag/0.2.5)
 
 ### Added
 
