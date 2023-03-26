@@ -15,7 +15,7 @@ import os
 # Criterias
 from .criteria import criteria_requests, criteria_img_types, criteria_img_compression, criteria_redirects, criteria_minified_files, criteria_img_lazy_loaded, criteria_request_payload
 
-from .utils import create_folder, delete_folder
+from .utils import checkEnergy, create_folder, delete_folder
 
 
 class Report:
@@ -231,7 +231,8 @@ class Report:
         metrics = {
             "size": self.full_size,
             "requests": amount_requests,
-            "potential_savings": criteria_3['details']['total_savings'] + criteria_6['details']['total_savings']
+            "potential_savings": criteria_3['details']['total_savings'] + criteria_6['details']['total_savings'],
+            "green": checkEnergy(self.url)
         }
 
         # Create report
