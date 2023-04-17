@@ -59,7 +59,7 @@ export default defineComponent({
             this.error = false;
             fetch(
                 "https://backend.green-web-analyzer.eu/request",
-                //"http://localhost:5000/request",
+                // "http://localhost:5000/request",
                 {
                     method: "POST",
                     body: JSON.stringify({

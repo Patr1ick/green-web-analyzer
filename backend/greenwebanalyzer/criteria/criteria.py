@@ -228,11 +228,14 @@ def criteria_minified_files(file_paths) -> dict:
         for file in file_paths[key]:
             output_path = f"{file['path']}.min.{key}"
 
-            minify.file(
-                file['type'].split(';')[0],
-                file['path'],
-                output_path
-            )
+            try:
+                minify.file(
+                    file['type'].split(';')[0],
+                    file['path'],
+                    output_path
+                )
+            except ValueError:
+                continue
 
             minified_size = os.path.getsize(output_path)
             size = os.path.getsize(file['path'])
