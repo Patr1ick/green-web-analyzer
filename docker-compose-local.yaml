@@ -10,3 +10,9 @@ services:
         environment:
             - APP_ENVIRONMENT=local
             - APP_VERSION=0.1.0
+        healthcheck:
+            test: curl --fail http://localhost:5000/health || exit 1
+            start_period: 10s
+            interval: 60s
+            retries: 5
+            timeout: 10s
