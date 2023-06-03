@@ -25,6 +25,8 @@ services:
         ports:
             - "443:443"
         restart: always
+        environment:
+            - WEBHOOK_PASSWORD=
         volumes:
             - ~/caddy_data:/data
             - ~/caddy_config:/config
