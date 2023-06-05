@@ -3,17 +3,17 @@
         <h1 class="text-4xl mb-4 font-bold">About</h1>
         <h2 class="text-2xl mb-4 mt-8 font-bold">What is this website?</h2>
         <p class="text-lg lg:w-3/4 2xl:w-1/4 mx-auto text-justify">
-            This website is a tool to analyse a public website on certain factors (called metrics and criteria). The metrics
-            represent statistics about that webpage, like the size of data transfer or the estimated CO2 emissions that was
-            caused by loading the website once. The criteria are certain factors how a website can be more efficiant or
-            improved, for example by using more modern technologies. The context of this analysis is Green IT and how
-            websites can be improved with regard to data minimisation and efficiency.
+            This website is a tool for analysing a public website according certain factors (called metrics and criteria).
+            The metrics are statistics about this webpage, such as the amount of data transferred or the estimated CO2
+            emissions caused by loading the website once. Criteria are specific factors about how a website can be made more
+            efficiant or improved, for example by using more modern technology. The context of this analysis is Green IT
+            and how websites can be improved in terms of data minimisation and efficiency.
         </p>
         <h2 class="text-2xl mb-4 mt-8 font-bold">Why?</h2>
         <p class="text-lg lg:w-3/4 2xl:w-1/4 mx-auto text-justify">
-            The climate change is one of the biggest challenges in the modern world and the Information and technology
-            sector is one of factor which is causing emissions which is believed to increase with time.
-            The Information and technology has an estimated share between 2.1% and 3.9% of the global GHG emissions
+            Climate change is one of the biggest challenges facing the modern world, and the information and technology
+            sector is one of drivers of emissions which is believed to increase over time. The ICT sector has an estimated
+            to account for between 2.1% and 3.9% of the global greenhouse gas emissions
             <RouterLink to="#literature" class="cursor-pointer">[1]</RouterLink>.
         </p>
 
@@ -21,17 +21,17 @@
         <h2 class="text-2xl mb-4 mt-8 font-bold">Methology</h2>
         <h3 class="text-lg mb-2 mt-4 font-bold">CO2 estimations</h3>
         <p class="text-lg lg:w-3/4 2xl:w-1/4 mx-auto text-justify list-decimal">
-            In order to estimate the caused CO2 emissions for one visit of the website the CO2.js library
-            <RouterLink to="#literature" class="cursor-pointer">[2]</RouterLink> by the Green Web Foundation is used. This
-            blog article <RouterLink to="#literature" class="cursor-pointer">[3]</RouterLink> explains how the estimations
-            are calculated in detail.
+            The CO2.js library <RouterLink to="#literature" class="cursor-pointer">[2]</RouterLink> from the Green Web
+            Foundation is used to estimate the CO2 emissions caused by a website visit. This blog post
+            <RouterLink to="#literature" class="cursor-pointer">[3]</RouterLink> explains in detail how the estimates are
+            calculated.
+
         </p>
         <h3 class="text-lg mb-2 mt-4 font-bold">Green energy</h3>
         <p class="text-lg lg:w-3/4 2xl:w-1/4 mx-auto text-justify list-decimal">
-            To check if a website is using renewable energy sources, the so called Greencheck API by the Green Web
-            Foundation is used <RouterLink to="#literature" class="cursor-pointer">[4]</RouterLink>. This API will
-            crossreference the server used with their dataset which includes hosting provider that are using renewable
-            energy.
+            To check wether a website uses renewable energy sources, the Green Web Foundation's Greencheck API is used
+            <RouterLink to="#literature" class="cursor-pointer">[4]</RouterLink>. This API will compares the server used
+            with their dataset which includes hosting providers that use renewable energy.
         </p>
 
 
