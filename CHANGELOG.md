@@ -8,6 +8,7 @@
 ### Updated
 
 -   Updated the way chromium and the chromedriver is downloaded [#20](https://github.com/Patr1ick/green-web-analyzer/issues/20)
+-   Updated AboutPage [#24](https://github.com/Patr1ick/green-web-analyzer/issues/24)
 
 ### Fixed
 
