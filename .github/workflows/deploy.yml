@@ -69,4 +69,4 @@ jobs:
                   webhook_url: ${{ secrets.WEBHOOK_URL }}
                   webhook_auth: "webhook:${{ secrets.WEBHOOK_PASSWORD }}"
                   webhook_secret: ${{ secrets.WEBHOOK_SECRET }}
-                  data: '{"data": { "backend_version": ${{ env.RELEASE_VERSION }}}}"'
+                  data: '{"data": { "backend_version": "${{ env.RELEASE_VERSION }}"}}'
