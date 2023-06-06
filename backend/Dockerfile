@@ -6,6 +6,7 @@ RUN apt update && apt install -y golang-go curl unzip wget \
 WORKDIR /app
 COPY . /app
 
+RUN chmod 777 ./setup/setup.sh
 RUN ./setup/setup.sh
 
 RUN pip install -r requirements.txt
