@@ -1,5 +1,4 @@
 <template>
-    <TheDisclaimer />
     <TheHeader />
     <main class="grow">
         <RouterView />

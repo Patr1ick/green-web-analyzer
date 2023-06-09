@@ -1,6 +1,6 @@
 # Green Web Analyzer
 
-This is the source code of a student research project for the DHBW Stuttgart. It is a website which analyzes a website in regard of data minimisation and efficiancy.
+This is the source code of a student research project for the DHBW Stuttgart. It is a website which analyses a website in regard of data minimisation and efficiency.
 
 ## Local Setup
 
