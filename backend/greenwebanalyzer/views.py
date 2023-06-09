@@ -73,6 +73,8 @@ def setupRoutes(app, limiter):
                 "Access-Control-Allow-Origin",
                 "https://green-web-analyzer.eu"
             )
+            response.headers.add('Access-Control-Allow-Headers', "*")
+            response.headers.add('Access-Control-Allow-Methods', "*")
         return response
 
     @app.after_request
