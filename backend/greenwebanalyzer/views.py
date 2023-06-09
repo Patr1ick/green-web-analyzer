@@ -33,6 +33,10 @@ def setupRoutes(app, limiter):
             "version": os.getenv('APP_VERSION')
         }, 200
 
+    @app.route('/health', methods=['GET'])
+    def health():
+        return {}, 200
+
     @app.route('/request', methods=['POST', 'OPTIONS'])
     @limiter.limit("10 per hour")
     def request_report():

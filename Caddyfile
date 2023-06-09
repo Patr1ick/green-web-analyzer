@@ -1,4 +1,7 @@
 webhook.green-web-analyzer.eu {
+	basicauth {
+		webhook {$WEBHOOK_PASSWORD}
+	}
 	reverse_proxy localhost:9000
 }
 

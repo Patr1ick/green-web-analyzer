@@ -4,7 +4,7 @@
             <h1 class="text-4xl mb-4 font-bold">
                 Green Web Analyzer
             </h1>
-            <p class="w-4/5 m-auto text-justify">
+            <p class="w-4/5 m-auto text-center">
                 This website is a tool that allows you to check a website for certain criterias. With the background of
                 Green IT, websites are to be checked with regard to data minimisation and efficiency.
             </p>

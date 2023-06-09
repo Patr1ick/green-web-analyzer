@@ -32,9 +32,15 @@ class Report:
         self.date = datetime.now(timezone)
         # Initialize WebDriver
         self.options = ChromeOptions()
+        self.options.binary_location = "/app/chrome-linux/chrome"
         self.options.headless = True
+        self.options.add_argument('--headless')
         self.options.add_argument('--no-sandbox')
         self.options.add_argument('--disable-dev-shm-usage')
+        self.options.add_argument('--single-process')
+        self.options.add_argument('--disable-gpu')
+        self.options.add_argument('--disable-audio-output')
+        self.options.add_argument('--disable-extension')
 
         self.file_paths = {
             "html": [],
@@ -47,7 +53,8 @@ class Report:
 
         self.folder_name = f"request-{time.time()}"
 
-        self.driver = webdriver.Chrome(options=self.options)
+        self.driver = webdriver.Chrome(
+            options=self.options, executable_path="/app/chromedriver_linux64/chromedriver")
 
         self.app = app
 

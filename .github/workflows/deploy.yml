@@ -4,6 +4,8 @@ on:
     push:
         tags:
             - "*"
+    schedule:
+        - cron: 0 1 1 * *
 
     # Allows you to run this workflow manually from the Actions tab
     workflow_dispatch:
@@ -65,5 +67,6 @@ jobs:
               uses: distributhor/workflow-webhook@v2
               env:
                   webhook_url: ${{ secrets.WEBHOOK_URL }}
+                  webhook_auth: "webhook:${{ secrets.WEBHOOK_PASSWORD }}"
                   webhook_secret: ${{ secrets.WEBHOOK_SECRET }}
-                  data: ${{ format('{{"backend_version":"{0}" }}', env.RELEASE_VERSION) }}
+                  data: '{"data": { "backend_version": "${{ env.RELEASE_VERSION }}"}}'

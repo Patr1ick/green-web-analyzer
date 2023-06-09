@@ -1,3 +1,20 @@
+## [1.0.0]
+
+### Added
+
+-   Added further security for the webhook endpoint
+-   Added healthcheck endpoint and integrated it into docker [#17](https://github.com/Patr1ick/green-web-analyzer/issues/17)
+
+### Updated
+
+-   Updated the way chromium and the Chromedriver is downloaded [#20](https://github.com/Patr1ick/green-web-analyzer/issues/20)
+-   Updated AboutPage [#24](https://github.com/Patr1ick/green-web-analyzer/issues/24)
+
+### Fixed
+
+-   Fixed units [#19](https://github.com/Patr1ick/green-web-analyzer/issues/19)
+-   Fixed bug where chromium and chromedriver has different versions [#20](https://github.com/Patr1ick/green-web-analyzer/issues/20)
+
 ## [0.2.6](https://github.com/Patr1ick/green-web-analyzer/releases/tag/0.2.5)
 
 ### Added

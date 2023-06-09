@@ -11,6 +11,12 @@ services:
         environment:
             - APP_ENVIRONMENT=prod
             - APP_VERSION=${BACKEND_VERSION}
+        healthcheck:
+            test: curl --fail http://localhost:5000/health || exit 1
+            start_period: 10s
+            interval: 60s
+            retries: 5
+            timeout: 10s
 
     frontend:
         image: patr1ick/green-web-analyzer:frontend-latest
@@ -19,6 +25,8 @@ services:
         ports:
             - "443:443"
         restart: always
+        environment:
+            - WEBHOOK_PASSWORD=
         volumes:
             - ~/caddy_data:/data
             - ~/caddy_config:/config
