@@ -9,7 +9,7 @@
                 The metrics are statistics about this webpage, such as the amount of data transferred or the estimated CO2
                 emissions caused by loading the website once. Criteria are specific factors about how a website can be made
                 more
-                efficiant or improved, for example by using more modern technology. The context of this analysis is Green IT
+                efficient or improved, for example by using more modern technology. The context of this analysis is Green IT
                 and how websites can be improved in terms of data minimisation and efficiency.
             </p>
             <h2 class="text-2xl mb-4 mt-8 font-bold">Why?</h2>
@@ -22,7 +22,7 @@
             </p>
 
 
-            <h2 class="text-2xl mb-4 mt-8 font-bold">Methology</h2>
+            <h2 class="text-2xl mb-4 mt-8 font-bold">Methodology</h2>
             <h3 class="text-lg mb-2 mt-4 font-bold">CO2 estimations</h3>
             <p class="text-justify list-decimal">
                 The CO2.js library <RouterLink to="#literature" class="cursor-pointer">[2]</RouterLink> from the Green Web
