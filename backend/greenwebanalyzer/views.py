@@ -38,7 +38,7 @@ def setupRoutes(app, limiter):
         return {}, 200
 
     @app.route('/request', methods=['POST', 'OPTIONS'])
-    @limiter.limit("10 per hour")
+    @limiter.limit("10/minute")
     def request_report():
         if request.method == 'OPTIONS':
             return _build_cors_preflight()
