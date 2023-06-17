@@ -1,13 +1,13 @@
 <template>
     <BasicCard class="m-2 md:m-16">
         <div class="flex flex-col justify-center text-center dark:text-gray-200">
-            <h1 class="text-2xl sm:text-4xl mb-4">
+            <h1 class="sm:text-4xl">
                 <a :href="results?.url" target="_blank" class="hover:underline">
                     {{ results?.url }}
                 </a>
             </h1>
             <p>Created on {{ new Date(results!.date).toLocaleString() }}</p>
-            <h2 class="text-2xl mt-4">Metrics</h2>
+            <h2>Metrics</h2>
             <table class="flex flex-wrap justify-center">
                 <tr class="metrics-row">
                     <div class="metric">

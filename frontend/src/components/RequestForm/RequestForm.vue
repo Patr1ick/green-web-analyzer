@@ -1,12 +1,12 @@
 <template>
-    <div class="flex justify-center items-center flex-col mt-8">
-        <h1 class="text-2xl font-bold text-center text-gray-900 dark:text-gray-200">
+    <div class="flex justify-center items-center flex-col">
+        <h2 class="text-gray-900 dark:text-gray-200">
             Request a report from a Website
-        </h1>
-        <form @submit.prevent="requestReport" class="flex flex-wrap justify-center content-center my-4">
-            <RequestInput v-model="url" />
-            <BasicButton type="submit" :disabled="isLoading" class="mr-0">
-                Submit
+        </h2>
+        <form @submit.prevent="requestReport" class="grid grid-cols-12 gap-4 my-4">
+            <RequestInput v-model="url" class="col-span-10" />
+            <BasicButton type="submit" :disabled="isLoading" class="col-span-2">
+                <MagnifyingGlassIcon class="p-2 h-12" />
             </BasicButton>
         </form>
         <BasicHint v-if="isLoading" type="information">
@@ -33,13 +33,14 @@
 <script lang="ts">
 import { defineComponent } from 'vue';
 import RequestInput from './RequestInput.vue'
-import { LinkIcon } from '@heroicons/vue/24/solid'
+import { LinkIcon, MagnifyingGlassIcon } from '@heroicons/vue/24/solid'
 
 
 export default defineComponent({
     components: {
         RequestInput,
-        LinkIcon
+        LinkIcon,
+        MagnifyingGlassIcon
     },
     data() {
         return {
@@ -58,8 +59,8 @@ export default defineComponent({
             this.$store.commit('invertIsLoading')
             this.error = false;
             fetch(
-                "https://backend.green-web-analyzer.eu/request",
-                // "http://localhost:5000/request",
+                // "https://backend.green-web-analyzer.eu/request",
+                "http://localhost:5000/request",
                 {
                     method: "POST",
                     body: JSON.stringify({
