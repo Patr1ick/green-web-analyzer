@@ -3,9 +3,9 @@
         <h2 class="text-gray-900 dark:text-gray-200">
             Request a report from a Website
         </h2>
-        <form @submit.prevent="requestReport" class="grid grid-cols-12 gap-4 my-4">
-            <RequestInput v-model="url" class="col-span-10" />
-            <BasicButton type="submit" :disabled="isLoading" class="col-span-2">
+        <form @submit.prevent="requestReport" class="grid grid-cols-1 items-center w-full lg:w-fit lg:grid-cols-12 gap-4 my-4">
+            <RequestInput v-model="url" :disabled="isLoading" class="lg:col-span-10" />
+            <BasicButton type="submit" :disabled="isLoading" class="lg:col-span-2">
                 <MagnifyingGlassIcon class="p-2 h-12" />
             </BasicButton>
         </form>

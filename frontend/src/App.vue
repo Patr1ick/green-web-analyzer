@@ -7,24 +7,27 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue'
-import TheDisclaimer from './components/Layout/TheDisclaimer.vue';
-import TheFooter from './components/Layout/TheFooter.vue';
-import TheHeader from './components/Layout/TheHeader.vue'
+import { defineComponent } from "vue";
+import TheDisclaimer from "./components/Layout/TheDisclaimer.vue";
+import TheFooter from "./components/Layout/TheFooter.vue";
+import TheHeader from "./components/Layout/TheHeader.vue";
 
 export default defineComponent({
     beforeCreate() {
-        if (localStorage.theme === "dark" || (!("theme" in localStorage) && window.matchMedia("(prefers-color-scheme: dark)").matches)) {
+        if (
+            localStorage.theme === "dark" ||
+            (!("theme" in localStorage) &&
+                window.matchMedia("(prefers-color-scheme: dark)").matches)
+        ) {
             document.documentElement.classList.add("dark");
             localStorage.setItem("theme", "dark");
-        }
-        else {
+        } else {
             document.documentElement.classList.remove("dark");
             localStorage.setItem("theme", "light");
         }
     },
-    components: { TheHeader, TheFooter, TheDisclaimer }
-})
+    components: { TheHeader, TheFooter, TheDisclaimer },
+});
 </script>
 
 <style>
@@ -33,7 +36,6 @@ export default defineComponent({
 @tailwind utilities;
 
 @layer base {
-
     body {
         @apply bg-gray-200 text-gray-800;
     }
@@ -57,7 +59,7 @@ export default defineComponent({
 
     /* Links */
     a {
-        @apply cursor-pointer;
+        @apply cursor-pointer text-primary-dark-40;
     }
 
     a:hover {
@@ -100,6 +102,10 @@ export default defineComponent({
         @apply border-primary-dark-40 opacity-50;
     }
 
+    .btn:disabled:hover {
+        @apply bg-primary-dark-40 cursor-not-allowed;
+    }
+
     .btn-nav {
         @apply p-4 border-transparent border-solid border-2 rounded-sm text-gray-100 text-lg text-center;
     }
@@ -110,6 +116,10 @@ export default defineComponent({
 
     .btn-nav:active {
         @apply border-primary-dark-40;
+    }
+
+    .metrics {
+        @apply grid grid-cols-2 lg:grid-cols-4 gap-4 w-full md:w-1/2 mx-auto mb-4;
     }
 }
 </style>

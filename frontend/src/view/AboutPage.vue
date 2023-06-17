@@ -22,7 +22,7 @@
             </p>
 
 
-            <h2>Methodology</h2>
+            <h2 id="methodology">Methodology</h2>
             <h3>CO2 estimations</h3>
             <p class="list-decimal">
                 The CO2.js library <RouterLink to="#literature" class="cursor-pointer">[2]</RouterLink> from the Green Web
