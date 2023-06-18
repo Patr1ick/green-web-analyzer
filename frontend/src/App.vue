@@ -107,7 +107,7 @@ export default defineComponent({
     }
 
     .btn:hover {
-        @apply bg-primary text-gray-200;
+        @apply bg-primary text-gray-200 dark:text-gray-800;
     }
 
     .btn:active {

@@ -27,7 +27,7 @@
                     <p class="text-center text-2xl">{{ convert(results?.metrics.potential_savings) }}</p>
                 </div>
             </div>
-            <BasicAccordion :status="results?.metrics.green.green" class="md:w-1/2 md:mx-auto">
+            <BasicAccordion :status="results?.metrics.green.green" class="md:w-1/2 2xl:w-1/3 mt-8 md:mx-auto">
                 <template #title>
                     {{ results?.metrics.green.green ? `This website is using green energy.` : `This website is not
                     using green energy`}}
@@ -45,7 +45,7 @@
                 </template>
                 <template #details v-else>
                     <p class="text-xs">
-                        It appears that this website does not use a hosting service that uses green energy.  Please note that this information may be incorrect. There are several possible reasons for a mistakes. You can find out more about the methodology <RouterLink to="/about">here</RouterLink>.
+                        It appears that this website does not use a hosting service that uses green energy.  Please note that this information may be incorrect. There are several possible reasons for a mistakes. You can find out more about the methodology <RouterLink to="/about#methodology">here</RouterLink>.
                     </p>
                 </template>
             </BasicAccordion>
