@@ -10,25 +10,24 @@
                 There are no massive payloads above 500 KB.
             </div>
             <div v-else class="overflow-x-auto">
-                <table class="w-full border-separate border-spacing-1">
+                <table>
                     <thead class="dark:bg-opacity-25 bg-gray-800">
                         <tr>
-                            <th class="border border-gray-600 px-2">URL</th>
-                            <th class="border border-gray-600 px-2">Type</th>
-                            <th class="border border-gray-600 px-2">Size</th>
+                            <th>URL</th>
+                            <th>Type</th>
+                            <th>Size</th>
                         </tr>
                     </thead>
-                    <tr v-for="request in result.details.requests" class="text-gray-800 dark:text-gray-200">
-                        <td
-                            class="border border-gray-700 dark:border-gray-100 dark:border-opacity-25 text-left pl-4 max-w-sm">
+                    <tr v-for="request in result.details.requests">
+                        <td class="text-left pl-4 max-w-sm">
                             <a :href="request.url" class="hover:underline break-all ">
                                 {{ request.url }}
                             </a>
                         </td>
-                        <td class="border border-gray-700 dark:border-gray-100 dark:border-opacity-25">
+                        <td>
                             {{ request.response.type }}
                         </td>
-                        <td class="border border-gray-700 dark:border-gray-100 dark:border-opacity-25">
+                        <td>
                             {{ convert(request.size) }}
                         </td>
                     </tr>

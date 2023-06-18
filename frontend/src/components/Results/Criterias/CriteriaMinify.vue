@@ -13,43 +13,41 @@
                     <p v-if="result.details[key].files.length == 0">
                         Either all files are minified or there are no files of this data type.
                     </p>
-                    <table v-else class="w-full p-4 border-separate border-spacing-1 ">
+                    <table v-else>
                         <thead class="dark:bg-opacity-25 bg-gray-800">
                             <tr>
-                                <th class="border border-gray-600 px-2">URL</th>
-                                <th class="border border-gray-600 px-2 bg-red-800 bg-opacity-20">Size</th>
-                                <th class="border border-gray-600 px-2 bg-emerald-800 bg-opacity-20">Minified Size</th>
-                                <th class="border border-gray-600 px-2">Potential Savings</th>
+                                <th>URL</th>
+                                <th class=" bg-red-800 bg-opacity-20">Size</th>
+                                <th class=" bg-primary-dark-40 bg-opacity-20">Minified Size</th>
+                                <th>Potential Savings</th>
                             </tr>
                         </thead>
-                        <tr v-for="file in result.details[key].files" class="text-gray-800 dark:text-gray-200">
-                            <td class="border border-gray-700 dark:border-gray-100 dark:border-opacity-25 break-all">
+                        <tr v-for="file in result.details[key].files">
+                            <td class="break-all">
                                 <a :href="file.url" target="_blank" class="hover:underline">
                                     {{ file.url }}
                                 </a>
                             </td>
-                            <td
-                                class="border border-gray-700 dark:border-gray-100 dark:border-opacity-25 bg-red-800 bg-opacity-20">
+                            <td class="bg-red-800 bg-opacity-20">
                                 {{ convert(file.size) }}
                             </td>
-                            <td
-                                class="border border-gray-700 dark:border-gray-100 dark:border-opacity-25 bg-emerald-800 bg-opacity-20">
+                            <td class="bg-primary-dark-40 bg-opacity-20">
                                 {{ convert(file.minified_size) }}
                             </td>
-                            <td class="border border-gray-700 dark:border-gray-100 dark:border-opacity-25">
+                            <td>
                                 - {{ convert(file.potential_saving) }}
                             </td>
                         </tr>
-                        <tr class="dark:bg-opacity-25 bg-gray-800">
-                            <td class="border border-gray-600 px-2">
+                        <tr>
+                            <td>
                                 Summary
                             </td>
-                            <td class="border border-gray-600 px-2 bg-red-800 bg-opacity-20">
+                            <td class="bg-red-800 bg-opacity-50">
                                 {{ convert(result.details[key].total_size) }}</td>
-                            <td class="border border-gray-600 px-2 bg-emerald-800 bg-opacity-20">
+                            <td class="bg-primary-dark-40 bg-opacity-50">
                                 {{ convert(result.details[key].total_minified_size) }}
                             </td>
-                            <td class="border border-gray-600 px-2">
+                            <td>
                                 - {{ convert(result.details[key].total_savings) }}</td>
                         </tr>
                     </table>

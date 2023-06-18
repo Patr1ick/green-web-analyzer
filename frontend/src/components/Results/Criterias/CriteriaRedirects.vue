@@ -10,25 +10,24 @@
                 Looks good! There are no redirects.
             </div>
             <div v-else class="overflow-x-auto">
-                <table class="w-full border-separate border-spacing-1">
+                <table>
                     <thead class="dark:bg-opacity-25 bg-gray-800">
                         <tr>
-                            <th class="border border-gray-600 px-2">URL</th>
-                            <th class="border border-gray-600 px-2">Date</th>
-                            <th class="border border-gray-600 px-2">Content-Type</th>
+                            <th>URL</th>
+                            <th>Date</th>
+                            <th>Content-Type</th>
                         </tr>
                     </thead>
                     <tr v-for="request in result.details.redirects" class="text-gray-800 dark:text-gray-200">
-                        <td
-                            class="border border-gray-700 dark:border-gray-100 dark:border-opacity-25 text-left pl-4 max-w-sm">
+                        <td class="text-left pl-4 max-w-sm">
                             <a :href="request.url" class="hover:underline break-all ">
                                 {{ request.url }}
                             </a>
                         </td>
-                        <td class="border border-gray-700 dark:border-gray-100 dark:border-opacity-25">
+                        <td>
                             {{ new Date(request.date).toLocaleString() }}
                         </td>
-                        <td class="border border-gray-700 dark:border-gray-100 dark:border-opacity-25">
+                        <td>
                             <div v-if="hasResponse(request)">
                                 {{ request.response.type }}
                             </div>

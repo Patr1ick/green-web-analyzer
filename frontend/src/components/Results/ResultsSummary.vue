@@ -1,56 +1,56 @@
 <template>
-    <BasicCard class="m-2 md:m-16">
-        <div class="flex flex-col justify-center text-center dark:text-gray-200">
-            <h1 class="text-2xl sm:text-4xl mb-4">
-                <a :href="results?.url" target="_blank" class="hover:underline">
+    <BasicCard class="m-4 md:m-16">
+        <div class="flex flex-col justify-center text-center">
+            <h1 class="text-xl sm:text-4xl">
+                <a :href="results?.url" target="_blank" class="hover:underline text-gray-600 dark:text-gray-200">
                     {{ results?.url }}
                 </a>
             </h1>
-            <p>Created on {{ new Date(results!.date).toLocaleString() }}</p>
-            <h2 class="text-2xl mt-4">Metrics</h2>
-            <table class="flex flex-wrap justify-center">
-                <tr class="metrics-row">
-                    <div class="metric">
-                        <h3>Size</h3>
-                        <p>{{ convert(results?.metrics.size) }}</p>
-                    </div>
-                    <div class="metric">
-                        <h3>Estimated CO2 emissions</h3>
-                        <p>{{ getEmissions(results!.metrics.size, results?.metrics.green.green) }}g</p>
-                    </div>
-                </tr>
-                <tr class="metrics-row">
-                    <div class="metric">
-                        <h3>Outgoing Requests</h3>
-                        <p>{{ results?.metrics.requests }}</p>
-                    </div>
-                    <div class="metric">
-                        <h3>Potential Savings</h3>
-                        <p>{{ convert(results?.metrics.potential_savings) }}</p>
-                    </div>
-                </tr>
-            </table>
-            <section
-                class="my-4 w-1/2 mx-auto grid justify-center border rounded p-4 border-gray-800 dark:border-gray-200 dark:border-opacity-20">
-                <div v-if="results?.metrics.green.green" class="flex justify-center items-center gap-4 text-lg">
-                    <CheckCircleIcon class="w-8 h-auto text-emerald-600" />
-                    This website is using green enery.
+            <p class="text-center">Created on {{ new Date(results!.date).toLocaleString() }}</p>
+            <h2>Metrics</h2>
+            <div class="metrics">
+                <div>
+                    <h3 class="text-xs mb-0">Size</h3>
+                    <p class="text-center text-2xl">{{ convert(results?.metrics.size) }}</p>
                 </div>
-                <div v-else class="flex justify-center items-center gap-4 text-lg">
-                    <XCircleIcon class="w-8 h-auto text-rose-800" />
-                    This website is not using green enery.
+                <div>
+                    <h3 class="text-xs mb-0">Estimated CO2 emissions</h3>
+                    <p class="text-center text-2xl">{{ getEmissions(results!.metrics.size, results?.metrics.green.green) }}g
+                    </p>
                 </div>
-                <p v-if="results?.metrics.green.hosted_by !== ''" class="text-xs">
-                    (Hosted on {{ results?.metrics.green.hosted_by }})
-                </p>
-                <div v-if="results?.metrics.green.details && results?.metrics.green.details.length !== 0" class="mt-4">
-                    <h4 class="text-lg"> More Information</h4>
-                    <div v-for="doc in results?.metrics.green.details" class="text-xs">
-                        <a :href="doc.link" target="_blank" class="hover:underline">{{ doc.title }}</a>
+                <div>
+                    <h3 class="text-xs mb-0">Outgoing Requests</h3>
+                    <p class="text-center text-2xl">{{ results?.metrics.requests }}</p>
+                </div>
+                <div>
+                    <h3 class="text-xs mb-0">Potential Savings</h3>
+                    <p class="text-center text-2xl">{{ convert(results?.metrics.potential_savings) }}</p>
+                </div>
+            </div>
+            <BasicAccordion :status="results?.metrics.green.green" class="md:w-1/2 2xl:w-1/3 mt-8 md:mx-auto">
+                <template #title>
+                    {{ results?.metrics.green.green ? `This website is using green energy.` : `This website is not
+                    using green energy`}}
+                </template>
+                <template #details v-if="results?.metrics.green.green">
+                    <p v-if="results?.metrics.green.hosted_by !== ''" class="text-xs text-center">
+                        Hosted by {{ results?.metrics.green.hosted_by }}
+                    </p>
+                    <div v-if="results?.metrics.green.details && results?.metrics.green.details.length !== 0" class="mt-4">
+                        <h4 class="text-lg"> More Information</h4>
+                        <div v-for="doc in results?.metrics.green.details" class="text-xs">
+                            <a :href="doc.link" target="_blank" class="hover:underline">{{ doc.title }}</a>
+                        </div>
                     </div>
-                </div>
-            </section>
-            <h2 class="text-2xl mt-4">Criterias</h2>
+                </template>
+                <template #details v-else>
+                    <p class="text-xs">
+                        It appears that this website does not use a hosting service that uses green energy.  Please note that this information may be incorrect. There are several possible reasons for a mistakes. You can find out more about the methodology <RouterLink to="/about#methodology">here</RouterLink>.
+                    </p>
+                </template>
+            </BasicAccordion>
+            
+            <h2>Criterias</h2>
             <section class="w-full xl:w-3/4 2xl:w-4/5 m-auto">
                 <CriteriaRequests :result="getCriteria(0)" />
                 <CriteriaMassivePayloads :result="getCriteria(1)" />
@@ -112,30 +112,15 @@ export default defineComponent({
         }
     },
     components: {
-        CriteriaRequests, CriteriaImageType, CriteriaImageCompression, CriteriaRedirects, CriteriaMinify, CriteriaImageLazyLoad, CriteriaMassivePayloads, CheckCircleIcon, XCircleIcon
+        CriteriaRequests,
+        CriteriaImageType,
+        CriteriaImageCompression,
+        CriteriaRedirects,
+        CriteriaMinify,
+        CriteriaImageLazyLoad,
+        CriteriaMassivePayloads,
+        CheckCircleIcon,
+        XCircleIcon
     }
 })
 </script>
-
-
-<style scoped>
-.metric h3 {
-    font-size: 12px;
-    margin: 0em;
-}
-
-.metric p {
-    margin: 0em;
-    font-size: 28px;
-}
-
-.metrics-row {
-    display: flex;
-}
-
-.metric {
-    margin: 1em;
-    display: flex;
-    flex-direction: column;
-}
-</style>
