@@ -1,6 +1,6 @@
 <template>
     <ResultsSummary v-if="!isLoaded" />
-    <BasicCard v-else class="m-2 md:m-16">
+    <BasicCard v-else class="m-4 md:m-16">
         <main class="grid grid-cols-1 justify-center items-center w-3/4 m-auto">
             <h1 class="text-center text-lg">
                 No report is loaded.

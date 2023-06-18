@@ -7,51 +7,51 @@
         </template>
         <template #details>
             <div class="overflow-x-auto">
-                <table class="w-full p-4 border-separate border-spacing-1">
+                <table>
                     <thead class="dark:bg-opacity-25 bg-gray-800">
                         <tr>
-                            <th class="border border-gray-600 px-2">URL</th>
-                            <th class="border border-gray-600 px-2">Preview</th>
-                            <th class="border border-gray-600 px-2">Type</th>
-                            <th class="border border-gray-600 px-2 bg-red-800 bg-opacity-20">Size</th>
-                            <th class="border border-gray-600 px-2 bg-emerald-800 bg-opacity-20">Size in Webp</th>
-                            <th class="border border-gray-600 px-2">Potential Savings</th>
+                            <th>URL</th>
+                            <th>Preview</th>
+                            <th>Type</th>
+                            <th class="bg-red-800 bg-opacity-20">Size</th>
+                            <th class="bg-primary-dark-40 bg-opacity-20">Size in Webp</th>
+                            <th>Potential Savings</th>
                         </tr>
                     </thead>
-                    <tr v-for="img in result.details.files" class="text-gray-800 dark:text-gray-200">
-                        <td class="border border-gray-700 dark:border-gray-100 dark:border-opacity-25 break-all">
+                    <tr v-for="img in result.details.files">
+                        <td class="break-all">
                             <a :href="img.url" target="_blank" class="hover:underline">
                                 {{ img.url }}
                             </a>
                         </td>
-                        <td class="border border-gray-700 dark:border-gray-100 dark:border-opacity-25">
+                        <td >
                             <img :src="img.url" class="w-12 h-auto m-auto" />
                         </td>
-                        <td class="border border-gray-700 dark:border-gray-100 dark:border-opacity-25">
+                        <td >
                             {{ img.type }}
                         </td>
                         <td
-                            class="border border-gray-700 dark:border-gray-100 dark:border-opacity-25 bg-red-800 bg-opacity-20">
+                            class="bg-red-800 bg-opacity-20">
                             {{ convert(img.size) }}
                         </td>
                         <td
-                            class="border border-gray-700 dark:border-gray-100 dark:border-opacity-25 bg-emerald-800 bg-opacity-20">
+                            class="bg-primary-dark-40 bg-opacity-20">
                             {{ convert(img.size_webp) }}
                         </td>
-                        <td class="border border-gray-700 dark:border-gray-100 dark:border-opacity-25">
+                        <td >
                             - {{ convert(img.potential_saving) }}
                         </td>
                     </tr>
-                    <tr class="dark:bg-opacity-25 bg-gray-800">
-                        <td colspan="3" class="border border-gray-600 px-2">
+                    <tr>
+                        <td colspan="3" class="px-2">
                             Summary ({{ result.details.files.length }} Images)
                         </td>
-                        <td class="border border-gray-600 px-2 bg-red-800 bg-opacity-20">{{
+                        <td class="bg-red-800 bg-opacity-50">{{
                             convert(result.details.total_size) }}</td>
-                        <td class="border border-gray-600 px-2 bg-emerald-800 bg-opacity-20"> {{
+                        <td class="px-2 bg-primary-dark-40 bg-opacity-50"> {{
                             convert(result.details.total_size_webp)
                         }} </td>
-                        <td class="border border-gray-600 px-2">
+                        <td class="px-2">
                             - {{ convert(result.details.total_savings) }}
                         </td>
                     </tr>

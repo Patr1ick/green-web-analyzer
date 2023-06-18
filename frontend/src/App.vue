@@ -37,7 +37,7 @@ export default defineComponent({
 
 @layer base {
     body {
-        @apply bg-gray-200 text-gray-800;
+        @apply bg-gray-200 text-gray-800 dark:bg-zinc-800 dark:text-gray-300;
     }
 
     /* Headings */
@@ -69,6 +69,22 @@ export default defineComponent({
     /*  */
     footer {
         @apply flex flex-col justify-center items-center px-4 py-8 bottom-0 bg-zinc-900 text-gray-200;
+    }
+
+    table {
+        @apply w-full border-separate border-spacing-1 p-4;
+    }
+
+    tr {
+        @apply text-gray-600 dark:text-gray-200;
+    }
+
+    th {
+        @apply border border-gray-600 px-2 text-gray-200;
+    }
+
+    td {
+        @apply border border-gray-700 dark:border-gray-100 dark:border-opacity-25 px-2;
     }
 }
 

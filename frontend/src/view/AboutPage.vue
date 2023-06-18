@@ -1,5 +1,5 @@
 <template>
-    <BasicCard class="m-2 md:m-16  text-center">
+    <BasicCard class="m-4 md:m-16  text-center">
         <div class="text-lg 2xl:w-2/5 xl:w-1/2 w-3/4 mx-auto">
             <h1>About</h1>
             <h2>What is this website?</h2>

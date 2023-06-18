@@ -1,5 +1,5 @@
 <template>
-    <BasicCard class="m-2 md:m-16">
+    <BasicCard class="m-4 md:m-16">
         <div class="flex flex-col justify-center text-center">
             <h1 class="text-xl sm:text-4xl">
                 <a :href="results?.url" target="_blank" class="hover:underline text-gray-600 dark:text-gray-200">
@@ -50,7 +50,7 @@
                 </template>
             </BasicAccordion>
             
-            <h2 class="text-2xl mt-4">Criterias</h2>
+            <h2>Criterias</h2>
             <section class="w-full xl:w-3/4 2xl:w-4/5 m-auto">
                 <CriteriaRequests :result="getCriteria(0)" />
                 <CriteriaMassivePayloads :result="getCriteria(1)" />
