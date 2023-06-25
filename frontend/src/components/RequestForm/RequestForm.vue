@@ -59,8 +59,8 @@ export default defineComponent({
             this.$store.commit('invertIsLoading')
             this.error = false;
             fetch(
-                // "https://backend.green-web-analyzer.eu/request",
-                "http://localhost:5000/request",
+                "https://backend.green-web-analyzer.eu/requests",
+                //"http://localhost:5000/request",
                 {
                     method: "POST",
                     body: JSON.stringify({
@@ -71,19 +71,19 @@ export default defineComponent({
                     }
                 }
             ).then(async (response) => {
-                if (response.ok) {
-                    return response.json()
+                console.log(response);
+                if (!response.ok) {
+                    this.error = true
                 }
-                const data = await response.json()
-                throw new Error(data.description)
+                return response.json()
             }).then((data) => {
                 this.$store.commit('invertIsLoading')
-                this.$store.commit('setRequestResult', data)
-                this.$router.push('/results')
-            }).catch((err) => {
-                this.$store.commit('invertIsLoading')
-                this.errorMessage = err;
-                this.error = true
+                if (this.error){
+                    this.errorMessage = `${data.name}: ${data.description}`;
+                }else{
+                    this.$store.commit('setRequestResult', data)
+                    this.$router.push('/results')
+                }
             })
         }
     }
