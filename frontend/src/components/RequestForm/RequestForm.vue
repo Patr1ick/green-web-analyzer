@@ -77,13 +77,17 @@ export default defineComponent({
                 }
                 return response.json()
             }).then((data) => {
-                this.$store.commit('invertIsLoading')
+                this.$store.commit('invertIsLoading');
                 if (this.error){
                     this.errorMessage = `${data.name}: ${data.description}`;
                 }else{
                     this.$store.commit('setRequestResult', data)
                     this.$router.push('/results')
                 }
+            }).catch((error) => {
+                this.$store.commit('invertIsLoading');
+                this.error = true;
+                this.errorMessage = error;
             })
         }
     }
