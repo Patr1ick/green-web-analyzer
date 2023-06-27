@@ -86,7 +86,7 @@ def setupRoutes(app, limiter):
             "user_agent": request.headers.get('User-Agent'),
             "status": response.status,
             "content_length": response.content_length,
-            "data": response.get_data()
+            "data": response.get_data(as_text=True)
         })
 
         if os.getenv('APP_ENVIRONMENT') == "local" or os.getenv('APP_ENVIRONMENT') == "debug":

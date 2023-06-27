@@ -60,7 +60,7 @@ export default defineComponent({
             this.error = false;
             fetch(
                 "https://backend.green-web-analyzer.eu/requests",
-                //"http://localhost:5000/request",
+                // "http://localhost:5000/request",
                 {
                     method: "POST",
                     body: JSON.stringify({
@@ -71,7 +71,6 @@ export default defineComponent({
                     }
                 }
             ).then(async (response) => {
-                console.log(response);
                 if (!response.ok) {
                     this.error = true
                 }

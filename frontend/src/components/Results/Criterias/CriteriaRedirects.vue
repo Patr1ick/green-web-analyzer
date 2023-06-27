@@ -13,27 +13,24 @@
                 <table>
                     <thead class="dark:bg-opacity-25 bg-gray-800">
                         <tr>
-                            <th>URL</th>
+                            <th>From</th>
+                            <th>To</th>
                             <th>Date</th>
-                            <th>Content-Type</th>
                         </tr>
                     </thead>
                     <tr v-for="request in result.details.redirects" class="text-gray-800 dark:text-gray-200">
                         <td class="text-left pl-4 max-w-sm">
-                            <a :href="request.url" class="hover:underline break-all ">
-                                {{ request.url }}
+                            <a :href="request.from" class="hover:underline break-all ">
+                                {{ request.from }}
+                            </a>
+                        </td>
+                        <td class="text-left pl-4 max-w-sm">
+                            <a :href="request.to" class="hover:underline break-all ">
+                                {{ request.to }}
                             </a>
                         </td>
                         <td>
                             {{ new Date(request.date).toLocaleString() }}
-                        </td>
-                        <td>
-                            <div v-if="hasResponse(request)">
-                                {{ request.response.type }}
-                            </div>
-                            <div v-else>
-                                No Response
-                            </div>
                         </td>
                     </tr>
                 </table>

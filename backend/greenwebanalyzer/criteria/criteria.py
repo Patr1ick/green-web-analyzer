@@ -50,7 +50,11 @@ def criteria_redirects(requests) -> dict:
         if r['response'] != None:
             if r['response']['status_code'] == 301:
                 details['amount'] += 1
-                details['redirects'].append(r)
+                details['redirects'].append({
+                    "from": r['url'],
+                    "to": r['response']["Location"],
+                    "date": r['date']
+                })
 
     return {
         "id": 2,
