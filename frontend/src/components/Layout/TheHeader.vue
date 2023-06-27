@@ -1,7 +1,7 @@
 <template>
     <header class="grid grid-cols-1 md:grid-cols-2 gap-4 justify-start items-center p-8 bg-zinc-900">
         <RouterLink to="/" class="w-full mx-auto grid grids-cols-1 md:grid-cols-2 justify-center md:w-1/3 md:ml-0 hover:no-underline">
-            <img src="/green-web-analyzer.svg" class="w-12 m-auto" />
+            <img src="/green-web-analyzer.svg" class="w-12 m-auto" alt="Logo in the shape of a leaf" />
             <h1 class="w-full m-auto whitespace-nowrap text-lg lg:text-2xl text-gray-200">Green Web Analyzer</h1>
         </RouterLink>
         <nav class="grid grids-cols-1 md:grid-cols-4 justify-center w-full mx-auto xl:w-3/4 2xl:w-1/2 md:mr-0">

@@ -83,6 +83,8 @@ class Report:
                     "status_code": request.response.status_code if request.response.status_code else None,
                     "type": request.response.headers['Content-Type'],
                 }
+                if request.response.headers["Location"] != None:
+                    response["Location"] = request.response.headers["Location"]
             else:
                 response = None
 
