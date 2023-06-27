@@ -1,6 +1,10 @@
 ## [Unreleased]
 
-## Updated
+### Added
+
+- Added the new location url for redirects [#29](https://github.com/Patr1ick/green-web-analyzer/issues/29)
+
+### Updated
 
 - Updated UI
 - Updated TailwindCSS Preflight for basic UI elements [#27](https://github.com/Patr1ick/green-web-analyzer/issues/27)
