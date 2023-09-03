@@ -1,0 +1,26 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: green-web-analyzer-backend
+  annotations:
+    kubernetes.io/ingress.class: traefik
+    cert-manager.io/cluster-issuer: letsencrypt-prod
+  labels:
+    name: green-web-analyzer-backend
+spec:
+  tls:
+    - secretName: backend-green-web-analyzer-tls
+      hosts:
+      - backend.green-web-analyzer.eu
+    
+  rules:
+  - host: backend.green-web-analyzer.eu
+    http:
+      paths:
+      - pathType: Prefix
+        path: "/"
+        backend:
+          service:
+            name: green-web-analyzer-backend
+            port: 
+              number: 5000
