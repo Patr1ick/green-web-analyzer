@@ -1,0 +1,7 @@
+:8080 {
+	handle {
+		root * /srv
+		try_files {path} /
+		file_server
+	}
+}
