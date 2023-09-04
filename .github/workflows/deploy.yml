@@ -23,8 +23,9 @@ jobs:
               uses: actions/setup-node@v3
               with:
                   node-version: 18
-            - name: Set env
-              run: echo "RELEASE_VERSION=${GITHUB_REF#refs/*/}" >> $GITHUB_ENV
+            - name: Get tag
+              id: tag
+              uses: "WyriHaximus/github-action-get-previous-tag@v1"
             - name: Build fronted
               run: |
                   cd frontend
@@ -46,7 +47,7 @@ jobs:
                   context: ./backend
                   push: true
                   tags: |
-                      patr1ick/green-web-analyzer-backend:${{ env.RELEASE_VERSION }}
+                      patr1ick/green-web-analyzer-backend:${{ steps.tag.outputs.tag  }}
                       patr1ick/green-web-analyzer-backend:latest
 
             - name: Build and push frontend image
@@ -56,7 +57,7 @@ jobs:
                   file: ./frontend/caddy/Dockerfile
                   push: true
                   tags: |
-                      patr1ick/green-web-analyzer-gui:${{ env.RELEASE_VERSION }}
+                      patr1ick/green-web-analyzer-gui:${{ steps.tag.outputs.tag }}
                       patr1ick/green-web-analyzer-gui:latest
 
     deploy:
