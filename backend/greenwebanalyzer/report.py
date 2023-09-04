@@ -1,6 +1,7 @@
 # Selenium Wire
 from seleniumwire import webdriver
 from selenium.webdriver import ChromeOptions
+from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.support.wait import WebDriverWait
 from seleniumwire.utils import decode
 
@@ -54,7 +55,10 @@ class Report:
         self.folder_name = f"request-{time.time()}"
 
         self.driver = webdriver.Chrome(
-            options=self.options, executable_path="/app/chromedriver_linux64/chromedriver")
+            options=self.options, service=Service(
+                executable_path="/app/chromedriver_linux64/chromedriver"
+            )
+        )
 
         self.app = app
 
@@ -79,6 +83,8 @@ class Report:
                     "status_code": request.response.status_code if request.response.status_code else None,
                     "type": request.response.headers['Content-Type'],
                 }
+                if request.response.headers["Location"] != None:
+                    response["Location"] = request.response.headers["Location"]
             else:
                 response = None
 

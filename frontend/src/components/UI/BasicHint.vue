@@ -41,7 +41,7 @@ export default defineComponent({
     computed: {
         borderClass() {
             return {
-                'grid grid-cols-12 justify-items-center items-center w-full md:w-4/5 2xl:w-1/2 h-fit rounded border bg-opacity-25 p-2 text-center': true,
+                'grid grid-cols-12 justify-items-center items-center w-full w-full h-fit rounded border bg-opacity-25 p-2 text-center': true,
                 'border-rose-900 bg-rose-900': this.type == "error",
                 'border-emerald-600 bg-emerald-600': this.type == "success",
                 'border-blue-600 bg-blue-600': this.type == "information" || this.type == "question",

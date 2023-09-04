@@ -1,5 +1,5 @@
 <template>
-    <div class="p-4 rounded shadow-2xl bg-gray-100 dark:bg-zinc-900">
+    <div class="card card-white dark:card-dark">
         <slot />
     </div>
 </template>

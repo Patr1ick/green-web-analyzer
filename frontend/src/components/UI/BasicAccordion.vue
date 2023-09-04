@@ -10,7 +10,7 @@
             <PlusIcon v-if="collapsed" class="w-8 h-auto" />
             <MinusIcon v-else class="w-8 h-auto" />
         </button>
-        <section v-if="!collapsed" class="text-gray-200 p-4">
+        <section v-if="!collapsed" class="p-4">
             <slot name="description">
 
             </slot>
@@ -38,7 +38,7 @@ export default defineComponent({
             collapsed: true,
             iconStyle: {
                 'w-8 h-auto': true,
-                'text-emerald-600': this.status,
+                'text-primary': this.status,
                 'text-rose-900': !this.status
             }
         }

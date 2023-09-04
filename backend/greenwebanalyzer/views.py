@@ -1,7 +1,7 @@
 from json import JSONDecodeError
 import os
 
-from flask import request, abort, json, jsonify, make_response
+from flask import request, abort, json, jsonify, make_response, Response
 from werkzeug.exceptions import HTTPException
 
 import validators
@@ -11,6 +11,9 @@ from datetime import datetime
 import pytz
 
 from .report import Report
+
+# Error
+from selenium.common.exceptions import WebDriverException
 
 
 def setupRoutes(app, limiter):
@@ -38,7 +41,7 @@ def setupRoutes(app, limiter):
         return {}, 200
 
     @app.route('/request', methods=['POST', 'OPTIONS'])
-    @limiter.limit("10 per hour")
+    @limiter.limit("10/minute")
     def request_report():
         if request.method == 'OPTIONS':
             return _build_cors_preflight()
@@ -48,49 +51,32 @@ def setupRoutes(app, limiter):
         # Check if no URL was given or
         try:
             if request_data['url'] == None:
-                abort(400, description="No URL given.")
+                abort(400, description="No URL was provided.")
         except KeyError:
-            abort(400, description="Bad Request")
+            abort(400, description="Wrong payload was provided.")
 
         url = request_data['url']
 
         # Check if URL is valid
         if not validators.url(url):
             app.logger.error("Invalid URL was given: %s", url)
-            abort(400, description="No valid URL given.")
+            abort(400, description="Provided URL is not valid.")
 
         r = Report(url, app=app)
-        report = r.create_report()
+        try:
+            report = r.create_report()
+        except WebDriverException:
+            abort(500, description="Failed to retrieve website.")
 
         response = make_response(jsonify(report), 201)
-        if os.getenv('APP_ENVIRONMENT') == "local" or os.getenv('APP_ENVIRONMENT') == "debug":
-            response.headers.add(
-                "Access-Control-Allow-Origin",
-                "*"
-            )
-        else:
-            response.headers.add(
-                "Access-Control-Allow-Origin",
-                "https://green-web-analyzer.eu"
-            )
-            response.headers.add('Access-Control-Allow-Headers', "*")
-            response.headers.add('Access-Control-Allow-Methods', "*")
         return response
 
     @app.after_request
-    def after_request(response):
-
+    def after_request(response: Response):
         if request.environ.get('HTTP_X_FORWARDED_FOR') is None:
             ip = request.remote_addr
         else:
             ip = request.headers['X-Forwarded-For']
-
-        try:
-            url = json.loads(response.data)['url']
-        except JSONDecodeError:
-            url = None
-        except KeyError:
-            url = None
 
         app.logger.info({
             "date:": datetime.now(pytz.timezone('Europe/Berlin')).strftime('%Y-%m-%dT%H:%M:%S:%f%z'),
@@ -100,23 +86,27 @@ def setupRoutes(app, limiter):
             "user_agent": request.headers.get('User-Agent'),
             "status": response.status,
             "content_length": response.content_length,
-            "requested_url": url
+            "data": response.get_data(as_text=True)
         })
+
+        if os.getenv('APP_ENVIRONMENT') == "local" or os.getenv('APP_ENVIRONMENT') == "debug":
+            response.headers.add(
+                "Access-Control-Allow-Origin",
+                "*"
+            )
+            response.headers.add('Access-Control-Allow-Headers', "*")
+            response.headers.add('Access-Control-Allow-Methods', "*")
+        else:
+            response.headers.add(
+                "Access-Control-Allow-Origin",
+                "https://green-web-analyzer.eu"
+            )
+            response.headers.add('Access-Control-Allow-Headers', "Content-Type")
+            response.headers.add('Access-Control-Allow-Methods', "POST")
+
         return response
 
 
 def _build_cors_preflight():
     response = make_response()
-    if os.getenv('APP_ENVIRONMENT') == "local" or os.getenv('APP_ENVIRONMENT') == "debug":
-        response.headers.add(
-            "Access-Control-Allow-Origin",
-            "*"
-        )
-    else:
-        response.headers.add(
-            "Access-Control-Allow-Origin",
-            "https://green-web-analyzer.eu"
-        )
-    response.headers.add('Access-Control-Allow-Headers', "*")
-    response.headers.add('Access-Control-Allow-Methods', "*")
     return response

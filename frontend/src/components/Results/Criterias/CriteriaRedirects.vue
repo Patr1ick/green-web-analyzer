@@ -10,31 +10,27 @@
                 Looks good! There are no redirects.
             </div>
             <div v-else class="overflow-x-auto">
-                <table class="w-full border-separate border-spacing-1">
+                <table>
                     <thead class="dark:bg-opacity-25 bg-gray-800">
                         <tr>
-                            <th class="border border-gray-600 px-2">URL</th>
-                            <th class="border border-gray-600 px-2">Date</th>
-                            <th class="border border-gray-600 px-2">Content-Type</th>
+                            <th>From</th>
+                            <th>To</th>
+                            <th>Date</th>
                         </tr>
                     </thead>
                     <tr v-for="request in result.details.redirects" class="text-gray-800 dark:text-gray-200">
-                        <td
-                            class="border border-gray-700 dark:border-gray-100 dark:border-opacity-25 text-left pl-4 max-w-sm">
-                            <a :href="request.url" class="hover:underline break-all ">
-                                {{ request.url }}
+                        <td class="text-left pl-4 max-w-sm">
+                            <a :href="request.from" class="hover:underline break-all ">
+                                {{ request.from }}
                             </a>
                         </td>
-                        <td class="border border-gray-700 dark:border-gray-100 dark:border-opacity-25">
-                            {{ new Date(request.date).toLocaleString() }}
+                        <td class="text-left pl-4 max-w-sm">
+                            <a :href="request.to" class="hover:underline break-all ">
+                                {{ request.to }}
+                            </a>
                         </td>
-                        <td class="border border-gray-700 dark:border-gray-100 dark:border-opacity-25">
-                            <div v-if="hasResponse(request)">
-                                {{ request.response.type }}
-                            </div>
-                            <div v-else>
-                                No Response
-                            </div>
+                        <td>
+                            {{ new Date(request.date).toLocaleString() }}
                         </td>
                     </tr>
                 </table>

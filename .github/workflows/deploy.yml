@@ -4,16 +4,14 @@ on:
     push:
         tags:
             - "*"
-    schedule:
-        - cron: 0 1 1 * *
 
     # Allows you to run this workflow manually from the Actions tab
     workflow_dispatch:
 
 jobs:
     build:
-        name: Build and push docker images
-        runs-on: self-hosted
+        name: Build images and push to registry
+        runs-on: ubuntu-latest
 
         # Steps represent a sequence of tasks that will be executed as part of the job
         steps:
@@ -23,8 +21,11 @@ jobs:
               uses: actions/setup-node@v3
               with:
                   node-version: 18
-            - name: Set env
-              run: echo "RELEASE_VERSION=${GITHUB_REF#refs/*/}" >> $GITHUB_ENV
+            - name: Get tag
+              id: tag
+              uses: "WyriHaximus/github-action-get-previous-tag@v1"
+              with:
+                fallback: 0.0.0
             - name: Build fronted
               run: |
                   cd frontend
@@ -46,27 +47,44 @@ jobs:
                   context: ./backend
                   push: true
                   tags: |
-                      patr1ick/green-web-analyzer:backend-${{ env.RELEASE_VERSION }}
-                      patr1ick/green-web-analyzer:backend-latest
+                      patr1ick/green-web-analyzer-backend:${{ steps.tag.outputs.tag  }}
+                      patr1ick/green-web-analyzer-backend:latest
 
             - name: Build and push frontend image
               uses: docker/build-push-action@v3
               with:
                   context: .
+                  file: ./frontend/caddy/Dockerfile
                   push: true
                   tags: |
-                      patr1ick/green-web-analyzer:frontend-${{ env.RELEASE_VERSION }}
-                      patr1ick/green-web-analyzer:frontend-latest
+                      patr1ick/green-web-analyzer-gui:${{ steps.tag.outputs.tag }}
+                      patr1ick/green-web-analyzer-gui:latest
 
     deploy:
-        name: Deploy to server
-        runs-on: self-hosted
+        name: Deploy to cluster
+        runs-on: ubuntu-latest
         needs: build
         steps:
-            - name: Invoke deployment hook
-              uses: distributhor/workflow-webhook@v2
-              env:
-                  webhook_url: ${{ secrets.WEBHOOK_URL }}
-                  webhook_auth: "webhook:${{ secrets.WEBHOOK_PASSWORD }}"
-                  webhook_secret: ${{ secrets.WEBHOOK_SECRET }}
-                  data: '{"data": { "backend_version": "${{ env.RELEASE_VERSION }}"}}'
+          - name: Checkout
+            uses: actions/checkout@v3
+          - uses: azure/setup-kubectl@v3
+          - uses: azure/k8s-set-context@v3
+            with:
+              method: kubeconfig
+              kubeconfig: ${{ secrets.KUBECONFIG }}
+          - name: Deploy backend
+            uses: Azure/k8s-deploy@v4
+            with:
+              action: deploy
+              namespace: 'green-web-analyzer'
+              manifests: |
+                ./backend/k8s/backend-deployment.yaml
+                ./backend/k8s/backend-ingress.yaml
+          - name: Deploy frontend
+            uses: Azure/k8s-deploy@v4
+            with:
+              action: deploy
+              namespace: 'green-web-analyzer'
+              manifests: |
+                ./frontend/caddy/k8s-deployment.yaml
+                ./frontend/caddy/k8s-ingress.yaml
