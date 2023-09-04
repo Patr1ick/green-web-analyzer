@@ -12,8 +12,8 @@ on:
 
 jobs:
     build:
-        name: Build and push docker images
-        runs-on: self-hosted
+        name: Build images and push to registry
+        runs-on: ubuntu-latest
 
         # Steps represent a sequence of tasks that will be executed as part of the job
         steps:
@@ -46,27 +46,44 @@ jobs:
                   context: ./backend
                   push: true
                   tags: |
-                      patr1ick/green-web-analyzer:backend-${{ env.RELEASE_VERSION }}
-                      patr1ick/green-web-analyzer:backend-latest
+                      patr1ick/green-web-analyzer-backend:${{ env.RELEASE_VERSION }}
+                      patr1ick/green-web-analyzer-backend:latest
 
             - name: Build and push frontend image
               uses: docker/build-push-action@v3
               with:
                   context: .
+                  file: ./frontend/caddy/Dockerfile
                   push: true
                   tags: |
-                      patr1ick/green-web-analyzer:frontend-${{ env.RELEASE_VERSION }}
-                      patr1ick/green-web-analyzer:frontend-latest
+                      patr1ick/green-web-analyzer-gui:${{ env.RELEASE_VERSION }}
+                      patr1ick/green-web-analyzer-gui:latest
 
     deploy:
-        name: Deploy to server
-        runs-on: self-hosted
+        name: Deploy to cluster
+        runs-on: ubuntu-latest
         needs: build
         steps:
-            - name: Invoke deployment hook
-              uses: distributhor/workflow-webhook@v2
-              env:
-                  webhook_url: ${{ secrets.WEBHOOK_URL }}
-                  webhook_auth: "webhook:${{ secrets.WEBHOOK_PASSWORD }}"
-                  webhook_secret: ${{ secrets.WEBHOOK_SECRET }}
-                  data: '{"data": { "backend_version": "${{ env.RELEASE_VERSION }}"}}'
+          - name: Checkout
+            uses: actions/checkout@v3
+          - uses: azure/setup-kubectl@v3
+          - uses: azure/k8s-set-context@v3
+            with:
+              method: kubeconfig
+              kubeconfig: ${{ secrets.KUBECONFIG }}
+          - name: Deploy backend
+            uses: Azure/k8s-deploy@v4
+            with:
+              action: deploy
+              namespace: 'green-web-analyzer'
+              manifests: |
+                ./backend/k8s/backend-deployment.yaml
+                ./backend/k8s/backend-ingress.yaml
+          - name: Deploy frontend
+            uses: Azure/k8s-deploy@v4
+            with:
+              action: deploy
+              namespace: 'green-web-analyzer'
+              manifests: |
+                ./frontend/caddy/k8s-deployment.yaml
+                ./frontend/caddy/k8s-ingress.yaml
